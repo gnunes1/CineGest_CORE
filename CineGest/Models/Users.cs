@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CineGest.Models
 {
-    public class User
+    public class Users
     {
         /// <summary>
         /// Referencia o utilizador
@@ -20,12 +19,6 @@ namespace CineGest.Models
         public string Name { get; set; }
 
         /// <summary>
-        /// Password do utilizador
-        /// </summary>
-        [Required]
-        public string Password { get; set; }
-
-        /// <summary>
         /// Idade do utilizador
         /// </summary>
         [Required]
@@ -37,20 +30,14 @@ namespace CineGest.Models
         public string Image { get; set; }
 
         /// <summary>
-        /// Relaciona o utilizador a um cargo
-        /// </summary>
-        [Required]
-        [ForeignKey(nameof(Role))]
-        public int RoleFK { get; set; }
-
-        /// <summary>
         /// Referência o cargo
         /// </summary>
-        public Roles Role { get; set; }
+        [Required]
+        public int Role { get; set; }
 
         /// <summary>
-        /// Lista de bilhetes assiciados ao utilizador
+        /// Lista de bilhetes associados ao utilizador
         /// </summary>
-        public ICollection<Ticket> TicketList { get; set; }
+        public ICollection<Tickets> TicketList { get; set; }
     }
 }

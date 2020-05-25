@@ -47,14 +47,9 @@ namespace CineGest.Models
         public bool Highlighted { get; set; }
 
         /// <summary>
-        /// Filmes onde o filme está em cartaz
+        /// Todas as sessões do filme
         /// </summary>
-        public ICollection<Cinema_Movie> CinemaMovieList { get; set; }
-
-        /// <summary>
-        /// Lista de salas onde o filme está em sessão
-        /// </summary>
-        public ICollection<Room_Movie> RoomMovieList { get; set; }
+        public ICollection<Sessions> CinemaMovieList { get; set; }
 
     }
 }

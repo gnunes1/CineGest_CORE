@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CineGest.Models
 {
@@ -19,25 +18,27 @@ namespace CineGest.Models
         public string Name { get; set; }
 
         /// <summary>
-        /// Cidade onde o cinema está situado
+        /// Capacidade do cinema
         /// </summary>
         [Required]
-        [ForeignKey(nameof(City))]
-        public int CityFK { get; set; }
+        public int Capacity { get; set; }
 
         /// <summary>
-        /// Referência a cidade
+        /// Nome da cidade
         /// </summary>
-        public Cities City { get; set; }
+        [Required]
+        public string City { get; set; }
 
         /// <summary>
-        /// Lista dos filmes no cinema
+        /// Localização do cinema
         /// </summary>
-        public ICollection<Cinema_Movie> CinemaList { get; set; }
+        [Required]
+        public string Location { get; set; }
 
         /// <summary>
-        /// Lista de salas do cinema
+        /// Lista das sessões no cinema
         /// </summary>
-        public ICollection<Rooms> RoomList { get; set; }
+        public ICollection<Sessions> CinemaList { get; set; }
+
     }
 }
