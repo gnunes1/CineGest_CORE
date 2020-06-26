@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using cinegest.Data;
 
 namespace cinegest.Data.Migrations
 {
     [DbContext(typeof(CinegestDB))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200626165721_ModelsAndSeed")]
+    partial class ModelsAndSeed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

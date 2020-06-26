@@ -23,12 +23,12 @@ namespace cinegest
         {
             //****************************************************************************
             // especificação do 'tipo' e 'localização' da BD
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<CinegestDB>(options =>
                options.UseSqlServer(
                    Configuration.GetConnectionString("ConnectionDB")));
             //****************************************************************************
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<CinegestDB>();
             services.AddControllersWithViews();
             services.AddRazorPages();
 
