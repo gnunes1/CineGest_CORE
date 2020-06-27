@@ -21,14 +21,17 @@ namespace cinegest
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //****************************************************************************
-            // especificação do 'tipo' e 'localização' da BD
+
             services.AddDbContext<CinegestDB>(options =>
                options.UseSqlServer(
                    Configuration.GetConnectionString("ConnectionDB")));
-            //****************************************************************************
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+
+            //utilizador standard
+            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole>()  // ativa o funcionamento dos ROLES
                 .AddEntityFrameworkStores<CinegestDB>();
+
+
             services.AddControllersWithViews();
             services.AddRazorPages();
 
