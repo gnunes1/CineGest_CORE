@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using cinegest.Data;
 
 namespace cinegest.Data.Migrations
 {
     [DbContext(typeof(CinegestDB))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200627235259_AdminSeed")]
+    partial class AdminSeed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -177,7 +179,7 @@ namespace cinegest.Data.Migrations
                         new
                         {
                             Id = 1,
-                            DoB = new DateTime(2020, 6, 27, 23, 59, 9, 633, DateTimeKind.Utc).AddTicks(4994),
+                            DoB = new DateTime(2020, 6, 27, 23, 52, 59, 333, DateTimeKind.Utc).AddTicks(6912),
                             Email = "admin@admin",
                             Name = "Admin"
                         });
@@ -213,14 +215,14 @@ namespace cinegest.Data.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "1b410465-41b5-41a5-bd93-634bff1247ff",
+                            ConcurrencyStamp = "bcc66d8d-3a74-45ed-af51-902426a4a656",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "bf20de54-f42d-4e64-b439-f2f1c9993e24",
+                            ConcurrencyStamp = "95c9a213-fc38-4f87-aca8-ea7236f8145a",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -416,18 +418,19 @@ namespace cinegest.Data.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e3b7b4f8-bc78-4cfb-9722-02022b337c30",
+                            ConcurrencyStamp = "ad6e2527-4fb7-410c-85ff-f1419fbe7e1c",
+                            Email = "admin@admin",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Nome = "Admin",
                             NormalizedEmail = "ADMIN@ADMIN",
-                            NormalizedUserName = "ADMIN@ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHLXjT5twwToCfatKGgqHVJ0ni5Im06U2OVVbAm27YMxlvHX6rUTPlpTZYLKtG4BdQ==",
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAEAACcQAAAAEEBMfqTFyMhBbtrVunCJxdRbVzWpujf+SpGn/7B6yUCP06NhScaB/DXgYWsRBLCdZw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
-                            Timestamp = new DateTime(2020, 6, 28, 0, 59, 9, 644, DateTimeKind.Local).AddTicks(7254),
+                            Timestamp = new DateTime(2020, 6, 28, 0, 52, 59, 345, DateTimeKind.Local).AddTicks(7143),
                             TwoFactorEnabled = false,
-                            UserName = "admin@admin"
+                            UserName = "Admin"
                         });
                 });
 
