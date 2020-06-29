@@ -8,12 +8,23 @@
 	<ItemGroup>
 		<Compile Remove="Data\Migrations\20200626165558_ModelsAndSeed.cs" />
 		<Compile Remove="Data\Migrations\20200626165558_ModelsAndSeed.Designer.cs" />
+		<Compile Remove="Data\Migrations\20200627235259_AdminSeed.cs" />
+		<Compile Remove="Data\Migrations\20200627235259_AdminSeed.Designer.cs" />
+		<Compile Remove="Data\Migrations\20200627235910_AdminSeed2.cs" />
+		<Compile Remove="Data\Migrations\20200627235910_AdminSeed2.Designer.cs" />
+		<Compile Remove="Data\Migrations\20200628172049_VirtalModels.cs" />
+		<Compile Remove="Data\Migrations\20200628172049_VirtalModels.Designer.cs" />
+		<Compile Remove="Data\Migrations\20200628174951_AdminSeed.cs" />
+		<Compile Remove="Data\Migrations\20200628174951_AdminSeed.Designer.cs" />
+		<Compile Remove="Data\Migrations\20200628180044_AdminSeed.cs" />
+		<Compile Remove="Data\Migrations\20200628180044_AdminSeed.Designer.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.4" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.4" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.4" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.5" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.5" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.5">
 			<PrivateAssets>all</PrivateAssets>
@@ -23,10 +34,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Controllers\" />
 		<Folder Include="Models\" />
-		<Folder Include="Views\Shared\" />
-		<Folder Include="wwwroot\css\" />
 		<Folder Include="wwwroot\images\movies\" />
 		<Folder Include="wwwroot\images\users\" />
 		<Folder Include="wwwroot\js\" />

@@ -39,15 +39,15 @@ namespace cinegest.Data
         {
         }
 
-        public DbSet<Cinemas> Cinema { get; set; }
+        public DbSet<Cinemas> Cinemas { get; set; }
 
         public DbSet<Sessions> Sessions { get; set; }
 
-        public DbSet<Movies> Movie { get; set; }
+        public DbSet<Movies> Movies { get; set; }
 
-        public DbSet<Tickets> Ticket { get; set; }
+        public DbSet<Tickets> Tickets { get; set; }
 
-        public DbSet<Users> User { get; set; }
+        public DbSet<Users> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -105,12 +105,20 @@ namespace cinegest.Data
                 });
 
             //associa o role: Admin ao ApplicationUser: Admin
-            builder.Entity<IdentityUserRole<string>>()
-                .HasData(new IdentityUserRole<string>
+            builder.Entity<IdentityUserRole<string>>(b =>
+            {
+                builder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
                 {
                     RoleId = "1",
                     UserId = "1"
                 });
+
+                // Primary key
+                b.HasKey(r => new { r.UserId, r.RoleId });
+
+                // Maps to the AspNetUserRoles table
+                b.ToTable("AspNetUserRoles");
+            });
 
         }
     }

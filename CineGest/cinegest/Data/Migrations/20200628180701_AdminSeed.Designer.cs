@@ -10,7 +10,7 @@ using cinegest.Data;
 namespace cinegest.Data.Migrations
 {
     [DbContext(typeof(CinegestDB))]
-    [Migration("20200627235259_AdminSeed")]
+    [Migration("20200628180701_AdminSeed")]
     partial class AdminSeed
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,7 +46,7 @@ namespace cinegest.Data.Migrations
                         .IsUnique()
                         .HasFilter("[Name] IS NOT NULL");
 
-                    b.ToTable("Cinema");
+                    b.ToTable("Cinemas");
                 });
 
             modelBuilder.Entity("CineGest.Models.Movies", b =>
@@ -83,7 +83,7 @@ namespace cinegest.Data.Migrations
                         .IsUnique()
                         .HasFilter("[Name] IS NOT NULL");
 
-                    b.ToTable("Movie");
+                    b.ToTable("Movies");
                 });
 
             modelBuilder.Entity("CineGest.Models.Sessions", b =>
@@ -139,7 +139,7 @@ namespace cinegest.Data.Migrations
 
                     b.HasIndex("UserFK");
 
-                    b.ToTable("Ticket");
+                    b.ToTable("Tickets");
                 });
 
             modelBuilder.Entity("CineGest.Models.Users", b =>
@@ -173,13 +173,13 @@ namespace cinegest.Data.Migrations
                         .IsUnique()
                         .HasFilter("[Email] IS NOT NULL");
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            DoB = new DateTime(2020, 6, 27, 23, 52, 59, 333, DateTimeKind.Utc).AddTicks(6912),
+                            DoB = new DateTime(2020, 6, 28, 18, 7, 0, 627, DateTimeKind.Utc).AddTicks(4316),
                             Email = "admin@admin",
                             Name = "Admin"
                         });
@@ -215,14 +215,14 @@ namespace cinegest.Data.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "bcc66d8d-3a74-45ed-af51-902426a4a656",
+                            ConcurrencyStamp = "eaf469a3-b694-4f42-814c-72dc7d50ce70",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "95c9a213-fc38-4f87-aca8-ea7236f8145a",
+                            ConcurrencyStamp = "84191db0-eaba-41cf-b473-153a3de5ce1e",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -418,19 +418,18 @@ namespace cinegest.Data.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ad6e2527-4fb7-410c-85ff-f1419fbe7e1c",
-                            Email = "admin@admin",
+                            ConcurrencyStamp = "ca85c06a-ecec-453c-af7d-6ba21b52bca1",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Nome = "Admin",
                             NormalizedEmail = "ADMIN@ADMIN",
-                            NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEEBMfqTFyMhBbtrVunCJxdRbVzWpujf+SpGn/7B6yUCP06NhScaB/DXgYWsRBLCdZw==",
+                            NormalizedUserName = "ADMIN@ADMIN",
+                            PasswordHash = "AQAAAAEAACcQAAAAEB5iAjexrq0DwpTqqUb12WflKeDqrzqNvjhx0cdEyYb7ym+M9SKtIHqUzkbskKtJFQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
-                            Timestamp = new DateTime(2020, 6, 28, 0, 52, 59, 345, DateTimeKind.Local).AddTicks(7143),
+                            Timestamp = new DateTime(2020, 6, 28, 19, 7, 0, 640, DateTimeKind.Local).AddTicks(2687),
                             TwoFactorEnabled = false,
-                            UserName = "Admin"
+                            UserName = "admin@admin"
                         });
                 });
 

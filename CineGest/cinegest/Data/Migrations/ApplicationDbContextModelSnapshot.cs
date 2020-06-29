@@ -44,7 +44,7 @@ namespace cinegest.Data.Migrations
                         .IsUnique()
                         .HasFilter("[Name] IS NOT NULL");
 
-                    b.ToTable("Cinema");
+                    b.ToTable("Cinemas");
                 });
 
             modelBuilder.Entity("CineGest.Models.Movies", b =>
@@ -81,7 +81,7 @@ namespace cinegest.Data.Migrations
                         .IsUnique()
                         .HasFilter("[Name] IS NOT NULL");
 
-                    b.ToTable("Movie");
+                    b.ToTable("Movies");
                 });
 
             modelBuilder.Entity("CineGest.Models.Sessions", b =>
@@ -137,7 +137,7 @@ namespace cinegest.Data.Migrations
 
                     b.HasIndex("UserFK");
 
-                    b.ToTable("Ticket");
+                    b.ToTable("Tickets");
                 });
 
             modelBuilder.Entity("CineGest.Models.Users", b =>
@@ -171,13 +171,13 @@ namespace cinegest.Data.Migrations
                         .IsUnique()
                         .HasFilter("[Email] IS NOT NULL");
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            DoB = new DateTime(2020, 6, 27, 23, 59, 9, 633, DateTimeKind.Utc).AddTicks(4994),
+                            DoB = new DateTime(2020, 6, 28, 18, 7, 0, 627, DateTimeKind.Utc).AddTicks(4316),
                             Email = "admin@admin",
                             Name = "Admin"
                         });
@@ -213,14 +213,14 @@ namespace cinegest.Data.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "1b410465-41b5-41a5-bd93-634bff1247ff",
+                            ConcurrencyStamp = "eaf469a3-b694-4f42-814c-72dc7d50ce70",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "bf20de54-f42d-4e64-b439-f2f1c9993e24",
+                            ConcurrencyStamp = "84191db0-eaba-41cf-b473-153a3de5ce1e",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -416,16 +416,16 @@ namespace cinegest.Data.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e3b7b4f8-bc78-4cfb-9722-02022b337c30",
+                            ConcurrencyStamp = "ca85c06a-ecec-453c-af7d-6ba21b52bca1",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Nome = "Admin",
                             NormalizedEmail = "ADMIN@ADMIN",
                             NormalizedUserName = "ADMIN@ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHLXjT5twwToCfatKGgqHVJ0ni5Im06U2OVVbAm27YMxlvHX6rUTPlpTZYLKtG4BdQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEB5iAjexrq0DwpTqqUb12WflKeDqrzqNvjhx0cdEyYb7ym+M9SKtIHqUzkbskKtJFQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
-                            Timestamp = new DateTime(2020, 6, 28, 0, 59, 9, 644, DateTimeKind.Local).AddTicks(7254),
+                            Timestamp = new DateTime(2020, 6, 28, 19, 7, 0, 640, DateTimeKind.Local).AddTicks(2687),
                             TwoFactorEnabled = false,
                             UserName = "admin@admin"
                         });

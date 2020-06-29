@@ -1,0 +1,43 @@
+﻿/*carousel --------------------------------------*/
+.carousel {
+    height: 50vh;
+}
+
+.carousel-item,
+.carousel-inner,
+.carousel-inner img {
+    height: 100%;
+}
+
+.carousel-item {
+    text-align: center;
+}
+
+.carousel-inner img {
+    border: 2px solid transparent;
+    cursor: pointer;
+}
+
+    .carousel-inner img:hover {
+        border: 2px solid #ffc107;
+    }
+
+h2 {
+    font-weight: 300;
+}
+/*movie list   -------------------------*/
+.movieList-title {
+    margin-left: 3vw;
+    margin-top: 3vh;
+}
+
+.movieList-img {
+    max-height: 30vh;
+    margin: 0 auto;
+    border: 2px solid transparent;
+    cursor: pointer;
+}
+
+    .movieList-img:hover {
+        border: 2px solid #ffc107;
+    }

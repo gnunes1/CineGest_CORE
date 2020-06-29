@@ -1,8 +1,106 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@{ ViewData["Title"] = "Home Page"; }
+
+<h3 class="mt-4 text-center">EM DESTAQUE</h3>
+
+@if (Enumerable.Count(ViewBag.Highlighted) == 0) //carousel de filmes em destaque
+{
+    <div class="text-center align-content-center" style="height: 50vh; display: grid;">
+        <h2>Sem filmes em destaque</h2>
+    </div>
+}
+else
+{
+    <div class="carousel slide data-interval=5000" data-ride="carousel">
+        <div class="carousel-inner">
+            @{ var i = 0;}
+            @foreach (System.Collections.ArrayList item in ViewBag.Highlighted) //cria um slide
+            {
+                <div class="carousel-@(i == 0 ? "item active" : "item")">
+                    <img src=@item[1] class="img-fluid" alt=@item[2] title=@item[2]>
+                </div>
+                i = i + 1;
+
+
+                if (item[3].ToString() != "01-01-0001" && item[4].ToString() != "01-01-0001")
+                {
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5 class="text-warning">Disponível de @item[3] a @item[4]</h5>
+                    </div>
+                }
+            }
+
+        </div>
+
+    </div>
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@*banner*@
+<div class="row text-center mx-0">
+    <div class="col mt-4">
+        <div class="container">
+            <h2>Compre aqui o seu bilhete para assistir no nosso cinema local</h2>
+        </div>
+    </div>
+    <div class="col banner-border mt-4 border-left border-right">
+        <div class="container">
+            <h2>Todos os filmes recentes perto de sí</h2>
+            @if (!User.Identity.IsAuthenticated)
+            {
+                <button class="mt-2 btn btn-lg btn-warning" type="button">
+                    Inscreva-se
+                </button>
+            }
+        </div>
+    </div>
+    <div class="col mt-4">
+        <div class="container">
+            <h2 class="mt-2">As estreias mais recentes</h2>
+        </div>
+    </div>
+</div>
+
+
+@{ var movieList = (List<System.Collections.ArrayList>)ViewBag.Movies;}
+
+<div class="mt-4">
+    <h2 class="movieList-title">Lista de Filmes</h2>
+
+    @if (movieList.Count == 0) //carousel de filmes em destaque
+    {
+        <div class="text-center align-content-center" style="height: 30vh; display: grid;">
+            <h2>Sem filmes</h2>
+        </div>
+    }
+    else
+    {
+        <div class="carousel slide" id="movieCarousel" data-interval="false" wrap="false">
+            <div class="carousel-inner">
+
+                @for (int j = 0; j < movieList.Count; j++)
+                {
+                    int k;
+                    <div class="carousel-@(j == 0 ? "item active" : "item")">
+                        @for (k = j; k < movieList.Count; k++)
+                        {
+                            <a asp-action="Details" asp-route-id="@movieList[k][0]" asp-controller="Movies">
+                                <img src=@movieList[k][2] class="img-fluid movieList-img" alt=@movieList[k][1] title=@movieList[k][1]>
+                            </a>
+                            if ((k + 1) % 4 == 0) break;
+
+                        }
+                    </div>
+                    j = k;
+                }
+
+                <a class="carousel-control-prev" href="#movieCarousel" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#movieCarousel" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </div>
+    }
 </div>
