@@ -2,7 +2,7 @@
 
 <h3 class="mt-4 text-center">EM DESTAQUE</h3>
 
-@if (Enumerable.Count(ViewBag.Highlighted) == 0) //carousel de filmes em destaque
+@if (Enumerable.Count(ViewBag.Highlighted) == 0) //não existem filmes em destaque
 {
     <div class="text-center align-content-center" style="height: 50vh; display: grid;">
         <h2>Sem filmes em destaque</h2>
@@ -13,10 +13,12 @@ else
     <div class="carousel slide data-interval=5000" data-ride="carousel">
         <div class="carousel-inner">
             @{ var i = 0;}
-            @foreach (System.Collections.ArrayList item in ViewBag.Highlighted) //cria um slide
+            @foreach (System.Collections.ArrayList item in ViewBag.Highlighted) //cria um slide para cada filme
             {
                 <div class="carousel-@(i == 0 ? "item active" : "item")">
-                    <img src=@item[1] class="img-fluid" alt=@item[2] title=@item[2]>
+                    <a asp-action="Details" asp-route-id="@item[0]" asp-controller="Movies">
+                        <img src=@item[1] class="img-fluid" alt=@item[2] title=@item[2]>
+                    </a>
                 </div>
                 i = i + 1;
 
@@ -46,9 +48,9 @@ else
             <h2>Todos os filmes recentes perto de sí</h2>
             @if (!User.Identity.IsAuthenticated)
             {
-                <button class="mt-2 btn btn-lg btn-warning" type="button">
-                    Inscreva-se
-                </button>
+
+                <a class="mt-2 btn btn-lg btn-warning" asp-area="Identity" asp-page="/Account/Register">Inscreva-se</a>
+
             }
         </div>
     </div>
@@ -65,13 +67,13 @@ else
 <div class="mt-4">
     <h2 class="movieList-title">Lista de Filmes</h2>
 
-    @if (movieList.Count == 0) //carousel de filmes em destaque
+    @if (movieList.Count == 0) //não existem filmes
     {
         <div class="text-center align-content-center" style="height: 30vh; display: grid;">
             <h2>Sem filmes</h2>
         </div>
     }
-    else
+    else //cria slides de 4 filmes
     {
         <div class="carousel slide" id="movieCarousel" data-interval="false" wrap="false">
             <div class="carousel-inner">
