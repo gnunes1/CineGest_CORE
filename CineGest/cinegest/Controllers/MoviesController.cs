@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using cinegest.Data;
+using CineGest.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using CineGest.Models;
-using cinegest.Data;
 
 namespace cinegest.Controllers
 {
@@ -124,14 +121,14 @@ namespace cinegest.Controllers
                 return NotFound();
             }
 
-            var movies = await _context.Movies
+            var movie = await _context.Movies
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (movies == null)
+            if (movie == null)
             {
                 return NotFound();
             }
 
-            return View(movies);
+            return View(movie);
         }
 
         // POST: Movies/Delete/5
@@ -139,8 +136,22 @@ namespace cinegest.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var movies = await _context.Movies.FindAsync(id);
-            _context.Movies.Remove(movies);
+            var movie = await _context.Movies.FindAsync(id);
+
+            if (await _context.Sessions.Where(s => s.Cinema.Id == id).AnyAsync())
+            {
+                ViewData["message"] = "Não é possivel apagar o filme com sessões agendadas.";
+                return View(movie);
+            }
+
+            _context.Movies.Remove(movie);
+
+            var sessions = await _context.Sessions.Where(s => s.Movie == movie).ToListAsync();
+            foreach (var item in sessions) //apaga todas as sessions
+            {
+                _context.Sessions.Remove(item);
+            }
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -148,6 +159,17 @@ namespace cinegest.Controllers
         private bool MoviesExists(int id)
         {
             return _context.Movies.Any(e => e.Id == id);
+        }
+
+        [AcceptVerbs("GET", "POST")]
+        public IActionResult VerifyName(string name)
+        {
+            if (_context.Movies.Where(c => c.Name == name).Any())
+            {
+                return Json($"Já existe um filme com o mesmo nome.");
+            }
+
+            return Json(true);
         }
     }
 }

@@ -10,7 +10,7 @@
 <div class="ml-3">
     <dl class="row">
         <dt class="col-sm-2">
-            Cinema
+            @Html.DisplayNameFor(model => model.Session.Cinema.Name)
         </dt>
         <dd class="col-sm-10">
             <a asp-area="Cinemas" asp-page="/Details" asp-route-id="@Model.Session.Cinema.Id">
@@ -18,7 +18,8 @@
             </a>
         </dd>
         <dt class="col-sm-2">
-            Filme
+            @Html.DisplayNameFor(model => model.Session.Movie.Name)
+
         </dt>
         <dd class="col-sm-10">
             <a asp-area="Movies" asp-page="/Details" asp-route-id="@Model.Session.Movie.Id">
@@ -26,7 +27,7 @@
             </a>
         </dd>
         <dt class="col-sm-2">
-            Email do utilizador
+            @Html.DisplayNameFor(model => model.User.Email)
         </dt>
         <dd class="col-sm-10">
             <a class="mt-2 btn btn-lg btn-warning" asp-area="Users" asp-page="/Details" asp-route-id="@Model.User.Id">
@@ -34,7 +35,7 @@
             </a>
         </dd>
         <dt class="col-sm-2">
-            Lugar
+            @Html.DisplayNameFor(model => model.Seat)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Seat)

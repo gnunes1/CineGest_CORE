@@ -30,13 +30,17 @@ namespace cinegest.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("City")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Location")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(40)")
+                        .HasMaxLength(40);
 
                     b.Property<int?>("SessionsId")
                         .HasColumnType("int");
@@ -44,8 +48,7 @@ namespace cinegest.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
-                        .IsUnique()
-                        .HasFilter("[Name] IS NOT NULL");
+                        .IsUnique();
 
                     b.HasIndex("SessionsId");
 
@@ -60,12 +63,14 @@ namespace cinegest.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Duration")
                         .HasColumnType("int");
 
                     b.Property<string>("Genres")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Highlighted")
@@ -75,9 +80,12 @@ namespace cinegest.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(40)")
+                        .HasMaxLength(40);
 
                     b.Property<string>("Poster")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("SessionsId")
@@ -86,8 +94,7 @@ namespace cinegest.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
-                        .IsUnique()
-                        .HasFilter("[Name] IS NOT NULL");
+                        .IsUnique();
 
                     b.HasIndex("SessionsId");
 
@@ -167,10 +174,13 @@ namespace cinegest.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(40)")
+                        .HasMaxLength(40);
 
                     b.Property<string>("Role")
                         .HasColumnType("nvarchar(max)");
@@ -178,18 +188,20 @@ namespace cinegest.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
-                        .IsUnique()
-                        .HasFilter("[Email] IS NOT NULL");
+                        .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("User");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            DoB = new DateTime(2020, 6, 30, 11, 54, 1, 228, DateTimeKind.Utc).AddTicks(9514),
+                            ApplicationUser = "1",
+                            Avatar = "default.png",
+                            DoB = new DateTime(2020, 6, 30, 19, 50, 56, 743, DateTimeKind.Utc).AddTicks(9157),
                             Email = "admin@admin",
-                            Name = "Admin"
+                            Name = "Admin",
+                            Role = "Admin"
                         });
                 });
 
@@ -223,14 +235,14 @@ namespace cinegest.Data.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "3595b0a7-c482-44c4-8091-796636160190",
+                            ConcurrencyStamp = "f067d9c4-01c0-4dbb-ab20-79ae78754ed1",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "d734d133-5a9b-44e9-b23b-0cf1f492f32a",
+                            ConcurrencyStamp = "1ab6f89b-8af3-48cc-9dbd-8f96a7fa0d44",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -426,16 +438,16 @@ namespace cinegest.Data.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a01ac97c-5d48-4944-993e-9d5df094b2a7",
+                            ConcurrencyStamp = "6797fc61-2f4a-4a8c-8723-3188a0af01de",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Nome = "Admin",
                             NormalizedEmail = "ADMIN@ADMIN",
                             NormalizedUserName = "ADMIN@ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEP9ryyY0MfE7RrBLOSMnNQpJkj/+qlwet4H7MMupLH0f0CHvgd+CFUkvBmfwgGYolQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGMSIXigmxvZN/CtOIKWCkgrh7Zxzcxbf4yddkwKvgaynX4jhFV6dqPd8M3TnrALZw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
-                            Timestamp = new DateTime(2020, 6, 30, 12, 54, 1, 244, DateTimeKind.Local).AddTicks(9171),
+                            Timestamp = new DateTime(2020, 6, 30, 20, 50, 56, 756, DateTimeKind.Local).AddTicks(476),
                             TwoFactorEnabled = false,
                             UserName = "admin@admin"
                         });

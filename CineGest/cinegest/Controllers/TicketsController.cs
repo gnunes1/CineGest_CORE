@@ -68,7 +68,7 @@ namespace cinegest.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["SessionFK"] = new SelectList(_context.Sessions, "Id", "Id", tickets.SessionFK);
-            ViewData["UserFK"] = new SelectList(_context.Users, "Id", "Id", tickets.UserFK);
+            ViewData["UserFK"] = new SelectList(_context.User, "Id", "Id", tickets.UserFK);
             return View(tickets);
         }
 

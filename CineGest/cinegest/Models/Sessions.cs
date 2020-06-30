@@ -21,11 +21,14 @@ namespace CineGest.Models
         /// referência a sessão
         /// </summary>
         [Key]
+        [Display(Name = "# Sessão")]
         public int Id { get; set; }
 
         /// <summary>
         /// Relaciona o cinema à sessão
         /// </summary>
+        [Required(ErrorMessage = "Este campo é de preenchimento obrigatório.")]
+        [Display(Name = "Cinema")]
         [ForeignKey(nameof(Cinema))]
         public int CinemaFK { get; set; }
         public Cinemas Cinema { get; set; }
@@ -33,6 +36,8 @@ namespace CineGest.Models
         /// <summary>
         /// relaciona o filme à sessão
         /// </summary>
+        [Required(ErrorMessage = "Este campo é de preenchimento obrigatório.")]
+        [Display(Name = "Filme")]
         [ForeignKey(nameof(Movie))]
         public int MovieFK { get; set; }
         public Movies Movie { get; set; }
@@ -40,16 +45,21 @@ namespace CineGest.Models
         /// <summary>
         /// data de início da sessão
         /// </summary>
+        [Required(ErrorMessage = "Este campo é de preenchimento obrigatório.")]
+        [Display(Name = "Data de início")]
         public DateTime Start { get; set; }
 
         /// <summary>
         /// data de fim da sessão
         /// </summary>
+        [Required(ErrorMessage = "Este campo é de preenchimento obrigatório.")]
+        [Display(Name = "Data de fim")]
         public DateTime End { get; set; }
 
         /// <summary>
         /// Número de lugares ocupados na sessão
         /// </summary>
+        [Display(Name = "Lugares ocupados")]
         public int Occupated_seats { get; set; }
 
         /// <summary>

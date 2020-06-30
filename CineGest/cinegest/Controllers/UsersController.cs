@@ -21,7 +21,7 @@ namespace cinegest.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Users.ToListAsync());
+            return View(await _context.User.ToListAsync());
         }
 
         // GET: Users/Details/5
@@ -32,7 +32,7 @@ namespace cinegest.Controllers
                 return NotFound();
             }
 
-            var users = await _context.Users
+            var users = await _context.User
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (users == null)
             {
@@ -78,7 +78,7 @@ namespace cinegest.Controllers
                 return NotFound();
             }
 
-            var users = await _context.Users.FindAsync(id);
+            var users = await _context.User.FindAsync(id);
             if (users == null)
             {
                 return NotFound();
@@ -136,7 +136,7 @@ namespace cinegest.Controllers
                 return NotFound();
             }
 
-            var users = await _context.Users
+            var users = await _context.User
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (users == null)
             {
@@ -151,15 +151,26 @@ namespace cinegest.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var users = await _context.Users.FindAsync(id);
-            _context.Users.Remove(users);
+            var users = await _context.User.FindAsync(id);
+            _context.User.Remove(users);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool UsersExists(int id)
         {
-            return _context.Users.Any(e => e.Id == id);
+            return _context.User.Any(e => e.Id == id);
+        }
+
+        [AcceptVerbs("GET", "POST")]
+        public IActionResult VerifyEmail(string email)
+        {
+            if (_context.User.Where(c => c.Email == email).Any())
+            {
+                return Json($"Já existe um filme com o mesmo nome.");
+            }
+
+            return Json(true);
         }
     }
 }

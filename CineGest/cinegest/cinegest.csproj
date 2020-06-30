@@ -18,6 +18,24 @@
 		<Compile Remove="Data\Migrations\20200628174951_AdminSeed.Designer.cs" />
 		<Compile Remove="Data\Migrations\20200628180044_AdminSeed.cs" />
 		<Compile Remove="Data\Migrations\20200628180044_AdminSeed.Designer.cs" />
+		<Compile Remove="Data\Migrations\20200628180701_AdminSeed.cs" />
+		<Compile Remove="Data\Migrations\20200628180701_AdminSeed.Designer.cs" />
+		<Compile Remove="Data\Migrations\20200630115401_FKLists.cs" />
+		<Compile Remove="Data\Migrations\20200630115401_FKLists.Designer.cs" />
+		<Compile Remove="Data\Migrations\20200630192709_AdminSeed.cs" />
+		<Compile Remove="Data\Migrations\20200630192709_AdminSeed.Designer.cs" />
+		<Compile Remove="Data\Migrations\20200630193618_AdminSeed.cs" />
+		<Compile Remove="Data\Migrations\20200630193618_AdminSeed.Designer.cs" />
+		<Compile Remove="Data\Migrations\20200630193852_AdminSeed.cs" />
+		<Compile Remove="Data\Migrations\20200630193852_AdminSeed.Designer.cs" />
+		<Compile Remove="Data\Migrations\20200630194153_AdminSeed.cs" />
+		<Compile Remove="Data\Migrations\20200630194153_AdminSeed.Designer.cs" />
+		<Compile Remove="Data\Migrations\20200630194443_Seed.cs" />
+		<Compile Remove="Data\Migrations\20200630194443_Seed.Designer.cs" />
+		<Compile Remove="Data\Migrations\20200630194604_Seed2.cs" />
+		<Compile Remove="Data\Migrations\20200630194604_Seed2.Designer.cs" />
+		<Compile Remove="Data\Migrations\20200630194740_AdminSeed.cs" />
+		<Compile Remove="Data\Migrations\20200630194740_AdminSeed.Designer.cs" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -11,15 +11,15 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label class="control-label">Cinema</label>
+                <label asp-for="CinemaFK" class="control-label"></label>
                 <select asp-for="CinemaFK" class="form-control col-6" asp-items="ViewBag.CinemaFK"></select>
             </div>
             <div class="form-group">
-                <label class="control-label">Filme</label>
+                <label asp-for="MovieFK" class="control-label"></label>
                 <select asp-for="MovieFK" class="form-control col-6" asp-items="ViewBag.MovieFK"></select>
             </div>
             <div class="form-group">
-                <label class="control-label">Data de início</label>
+                <label asp-for="Start" class="control-label"></label>
                 <input type="datetime-local" asp-for="Start" class="form-control col-7" min=@DateTime.Now.ToString("yyyy-MM-ddTHH:mm") />
                 <span asp-validation-for="Start" class="text-danger"></span>
             </div>

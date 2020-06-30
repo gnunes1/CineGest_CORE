@@ -47,7 +47,7 @@ namespace cinegest.Data
 
         public DbSet<Tickets> Tickets { get; set; }
 
-        public DbSet<Users> Users { get; set; }
+        public DbSet<Users> User { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -67,14 +67,17 @@ namespace cinegest.Data
             builder.Entity<Sessions>().HasOne(s => s.Cinema).WithMany(c => c.SessionsList);
             builder.Entity<Sessions>().HasOne(s => s.Movie).WithMany(m => m.SessionsList);
 
-
+            //cria o utilizador admin para gerir os dados da aplicação web
             builder.Entity<Users>().HasData(new
+            Users
             {
                 Id = 1,
                 Name = "Admin",
                 Email = "admin@admin",
-                RoleFK = "Admin",
+                Role = "Admin",
                 DoB = DateTime.UtcNow,
+                ApplicationUser = "1",
+                Avatar = "default.png"
             });
 
             //adiciona o role de admin e user

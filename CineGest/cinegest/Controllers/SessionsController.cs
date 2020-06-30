@@ -47,8 +47,8 @@ namespace cinegest.Controllers
         // GET: Sessions/Create
         public IActionResult Create()
         {
-            ViewData["CinemaFK"] = new SelectList(_context.Cinemas, "Id", "Id");
-            ViewData["MovieFK"] = new SelectList(_context.Movies, "Id", "Id");
+            ViewData["CinemaFK"] = new SelectList(_context.Cinemas, "Id", "Name");
+            ViewData["MovieFK"] = new SelectList(_context.Movies, "Id", "Name");
             return View();
         }
 
@@ -65,8 +65,8 @@ namespace cinegest.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CinemaFK"] = new SelectList(_context.Cinemas, "Id", "Id", sessions.CinemaFK);
-            ViewData["MovieFK"] = new SelectList(_context.Movies, "Id", "Id", sessions.MovieFK);
+            ViewData["CinemaFK"] = new SelectList(_context.Cinemas, "Id", "Name", sessions.CinemaFK);
+            ViewData["MovieFK"] = new SelectList(_context.Movies, "Id", "Name", sessions.MovieFK);
             return View(sessions);
         }
 

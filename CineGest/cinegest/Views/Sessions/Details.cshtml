@@ -9,7 +9,7 @@
 <div class="ml-3">
     <dl class="row">
         <dt class="col-sm-2">
-            Cinema
+            @Html.DisplayNameFor(model => model.CinemaFK)
         </dt>
         <dd class="col-sm-10">
             <a asp-area="Cinemas" asp-page="/Details" asp-route-id="@Model.Cinema.Id">
@@ -17,7 +17,8 @@
             </a>
         </dd>
         <dt class="col-sm-2">
-            Filme
+            @Html.DisplayNameFor(model => model.MovieFK)
+
         </dt>
         <dd class="col-sm-10">
             <a asp-area="Movies" asp-page="/Details" asp-route-id="@Model.Movie.Id">
@@ -25,19 +26,19 @@
             </a>
         </dd>
         <dt class="col-sm-2">
-            Data de início
+            @Html.DisplayNameFor(model => model.Start)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Start)
         </dd>
         <dt class="col-sm-2">
-            Data de fim
+            @Html.DisplayNameFor(model => model.End)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.End)
         </dd>
         <dt class="col-sm-2">
-            Lugares ocupados
+            @Html.DisplayNameFor(model => model.Occupated_seats)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Occupated_seats)

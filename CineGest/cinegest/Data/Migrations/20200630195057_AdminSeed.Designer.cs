@@ -10,7 +10,7 @@ using cinegest.Data;
 namespace cinegest.Data.Migrations
 {
     [DbContext(typeof(CinegestDB))]
-    [Migration("20200628180701_AdminSeed")]
+    [Migration("20200630195057_AdminSeed")]
     partial class AdminSeed
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,19 +32,27 @@ namespace cinegest.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("City")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Location")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(40)")
+                        .HasMaxLength(40);
+
+                    b.Property<int?>("SessionsId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
-                        .IsUnique()
-                        .HasFilter("[Name] IS NOT NULL");
+                        .IsUnique();
+
+                    b.HasIndex("SessionsId");
 
                     b.ToTable("Cinemas");
                 });
@@ -57,12 +65,14 @@ namespace cinegest.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Duration")
                         .HasColumnType("int");
 
                     b.Property<string>("Genres")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Highlighted")
@@ -72,16 +82,23 @@ namespace cinegest.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(40)")
+                        .HasMaxLength(40);
 
                     b.Property<string>("Poster")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("SessionsId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
-                        .IsUnique()
-                        .HasFilter("[Name] IS NOT NULL");
+                        .IsUnique();
+
+                    b.HasIndex("SessionsId");
 
                     b.ToTable("Movies");
                 });
@@ -159,10 +176,13 @@ namespace cinegest.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(40)")
+                        .HasMaxLength(40);
 
                     b.Property<string>("Role")
                         .HasColumnType("nvarchar(max)");
@@ -170,18 +190,20 @@ namespace cinegest.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
-                        .IsUnique()
-                        .HasFilter("[Email] IS NOT NULL");
+                        .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("User");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            DoB = new DateTime(2020, 6, 28, 18, 7, 0, 627, DateTimeKind.Utc).AddTicks(4316),
+                            ApplicationUser = "1",
+                            Avatar = "default.png",
+                            DoB = new DateTime(2020, 6, 30, 19, 50, 56, 743, DateTimeKind.Utc).AddTicks(9157),
                             Email = "admin@admin",
-                            Name = "Admin"
+                            Name = "Admin",
+                            Role = "Admin"
                         });
                 });
 
@@ -215,14 +237,14 @@ namespace cinegest.Data.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "eaf469a3-b694-4f42-814c-72dc7d50ce70",
+                            ConcurrencyStamp = "f067d9c4-01c0-4dbb-ab20-79ae78754ed1",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "84191db0-eaba-41cf-b473-153a3de5ce1e",
+                            ConcurrencyStamp = "1ab6f89b-8af3-48cc-9dbd-8f96a7fa0d44",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -418,19 +440,33 @@ namespace cinegest.Data.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ca85c06a-ecec-453c-af7d-6ba21b52bca1",
+                            ConcurrencyStamp = "6797fc61-2f4a-4a8c-8723-3188a0af01de",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Nome = "Admin",
                             NormalizedEmail = "ADMIN@ADMIN",
                             NormalizedUserName = "ADMIN@ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEB5iAjexrq0DwpTqqUb12WflKeDqrzqNvjhx0cdEyYb7ym+M9SKtIHqUzkbskKtJFQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGMSIXigmxvZN/CtOIKWCkgrh7Zxzcxbf4yddkwKvgaynX4jhFV6dqPd8M3TnrALZw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
-                            Timestamp = new DateTime(2020, 6, 28, 19, 7, 0, 640, DateTimeKind.Local).AddTicks(2687),
+                            Timestamp = new DateTime(2020, 6, 30, 20, 50, 56, 756, DateTimeKind.Local).AddTicks(476),
                             TwoFactorEnabled = false,
                             UserName = "admin@admin"
                         });
+                });
+
+            modelBuilder.Entity("CineGest.Models.Cinemas", b =>
+                {
+                    b.HasOne("CineGest.Models.Sessions", null)
+                        .WithMany("CinemasList")
+                        .HasForeignKey("SessionsId");
+                });
+
+            modelBuilder.Entity("CineGest.Models.Movies", b =>
+                {
+                    b.HasOne("CineGest.Models.Sessions", null)
+                        .WithMany("MoviesList")
+                        .HasForeignKey("SessionsId");
                 });
 
             modelBuilder.Entity("CineGest.Models.Sessions", b =>
