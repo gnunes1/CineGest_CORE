@@ -10,6 +10,13 @@ namespace CineGest.Models
     /// </summary>
     public class Sessions
     {
+        public Sessions()
+        {
+            TicketsList = new HashSet<Tickets>();
+            MoviesList = new HashSet<Movies>();
+            CinemasList = new HashSet<Cinemas>();
+        }
+
         /// <summary>
         /// referência a sessão
         /// </summary>
@@ -49,6 +56,8 @@ namespace CineGest.Models
         /// Lista de bilhetes associados a esta sessão do filme
         /// </summary>
         public ICollection<Tickets> TicketsList { get; set; }
+        public ICollection<Movies> MoviesList { get; set; }
+        public ICollection<Cinemas> CinemasList { get; set; }
 
     }
 }

@@ -6,6 +6,11 @@ namespace CineGest.Models
 {
     public class Users
     {
+        public Users()
+        {
+            TicketsList = new HashSet<Tickets>();
+        }
+
         /// <summary>
         /// Referencia o utilizador
         /// </summary>

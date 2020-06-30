@@ -1,51 +1,53 @@
 ﻿@model CineGest.Models.Sessions
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Apagar Sessão";
 }
 
-<h1>Delete</h1>
+<h2>Apagar Sessão</h2>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Sessions</h4>
-    <hr />
+<p>Tem acerteza que quer apagar este registo?</p>
+<div class="ml-3">
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Cinema)
+        <dt class="col-sm-2">
+            Cinema
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Cinema.Id)
-        </dd class>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Movie)
+        <dd class="col-sm-10">
+            <a asp-area="Cinemas" asp-page="/Details" asp-route-id="@Model.Cinema.Id">
+                @Html.DisplayFor(model => model.Cinema.Name)
+            </a>
+        </dd>
+        <dt class="col-sm-2">
+            Filme
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Movie.Id)
-        </dd class>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Start)
+        <dd class="col-sm-10">
+            <a asp-area="Movies" asp-page="/Details" asp-route-id="@Model.Movie.Id">
+                @Html.DisplayFor(model => model.Movie.Name)
+            </a>
+        </dd>
+        <dt class="col-sm-2">
+            Data de início
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Start)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.End)
+        <dt class="col-sm-2">
+            Data de fim
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.End)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Occupated_seats)
+        <dt class="col-sm-2">
+            Lugares ocupados
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Occupated_seats)
         </dd>
     </dl>
-    
+
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Apagar" class="btn btn-danger" /> |
+        <a asp-action="Index">Voltar à tabela</a>
     </form>
 </div>

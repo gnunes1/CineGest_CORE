@@ -1,71 +1,69 @@
 ﻿@model IEnumerable<CineGest.Models.Movies>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Filmes";
 }
 
-<h1>Index</h1>
+<h1>Filmes</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Criar novo registo</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Nome
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                Descrição
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Genres)
+                Gêneros
+            </th>
+
+            <th>
+                Duração
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Poster)
+                Idade mínima
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Duration)
+                Em destaque
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Min_age)
+                Opções
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Highlighted)
-            </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Genres)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Poster)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Duration)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Min_age)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Highlighted)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Genres)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Duration)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Min_age)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Highlighted)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" title="Editar"><i class="fas fa-cog"></i></a>
+                    <a asp-action="Details" asp-route-id="@item.Id" title="Detalhes"><i class="fas fa-info mx-2"></i></a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" title="Apagar"><i class="fas fa-trash"></i></a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

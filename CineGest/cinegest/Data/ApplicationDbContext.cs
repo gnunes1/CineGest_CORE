@@ -64,6 +64,9 @@ namespace cinegest.Data
             builder.Entity<Cinemas>()
                 .HasIndex(c => c.Name)
                 .IsUnique();
+            builder.Entity<Sessions>().HasOne(s => s.Cinema).WithMany(c => c.SessionsList);
+            builder.Entity<Sessions>().HasOne(s => s.Movie).WithMany(m => m.SessionsList);
+
 
             builder.Entity<Users>().HasData(new
             {

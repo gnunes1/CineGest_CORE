@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using cinegest.Data;
+using CineGest.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using CineGest.Models;
-using cinegest.Data;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace cinegest.Controllers
 {
@@ -46,6 +45,12 @@ namespace cinegest.Controllers
         // GET: Users/Create
         public IActionResult Create()
         {
+            List<SelectListItem> list = new List<SelectListItem> {
+                new SelectListItem() { Text = "User", Value = "User" },
+                new SelectListItem() { Text = "Admin", Value = "Admin" }
+            };
+
+            ViewData["Roles"] = new SelectList(list, "Value", "Text");
             return View();
         }
 
@@ -78,6 +83,13 @@ namespace cinegest.Controllers
             {
                 return NotFound();
             }
+
+            List<SelectListItem> list = new List<SelectListItem> {
+                new SelectListItem() { Text = "User", Value = "User" },
+                new SelectListItem() { Text = "Admin", Value = "Admin" }
+            };
+
+            ViewData["Roles"] = new SelectList(list, "Value", "Text");
             return View(users);
         }
 

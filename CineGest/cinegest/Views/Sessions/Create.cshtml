@@ -1,49 +1,37 @@
 ﻿@model CineGest.Models.Sessions
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Criar Sessão";
 }
 
-<h1>Create</h1>
+<h2>Criar Sessão</h2>
 
-<h4>Sessions</h4>
-<hr />
-<div class="row">
+<div class="row ml-3">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="CinemaFK" class="control-label"></label>
-                <select asp-for="CinemaFK" class ="form-control" asp-items="ViewBag.CinemaFK"></select>
+                <label class="control-label">Cinema</label>
+                <select asp-for="CinemaFK" class="form-control col-6" asp-items="ViewBag.CinemaFK"></select>
             </div>
             <div class="form-group">
-                <label asp-for="MovieFK" class="control-label"></label>
-                <select asp-for="MovieFK" class ="form-control" asp-items="ViewBag.MovieFK"></select>
+                <label class="control-label">Filme</label>
+                <select asp-for="MovieFK" class="form-control col-6" asp-items="ViewBag.MovieFK"></select>
             </div>
             <div class="form-group">
-                <label asp-for="Start" class="control-label"></label>
-                <input asp-for="Start" class="form-control" />
+                <label class="control-label">Data de início</label>
+                <input type="datetime-local" asp-for="Start" class="form-control col-7" min=@DateTime.Now.ToString("yyyy-MM-ddTHH:mm") />
                 <span asp-validation-for="Start" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="End" class="control-label"></label>
-                <input asp-for="End" class="form-control" />
-                <span asp-validation-for="End" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Occupated_seats" class="control-label"></label>
-                <input asp-for="Occupated_seats" class="form-control" />
-                <span asp-validation-for="Occupated_seats" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Criar" class="btn btn-success" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Voltar à tabela</a>
 </div>
 
 @section Scripts {

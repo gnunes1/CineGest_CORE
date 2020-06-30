@@ -1,47 +1,53 @@
 ﻿@model IEnumerable<CineGest.Models.Tickets>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Bilhetes";
 }
 
-<h1>Index</h1>
+<h1>Bilhetes</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Criar novo registo</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Session)
+                Sessão
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.User)
+                Utilizador
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Seat)
+                Lugar
             </th>
-            <th></th>
+            <th>
+                Opções
+            </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Session.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Seat)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-area="Sessions" asp-page="/Details" asp-route-id="@item.Session.Id">
+                        @Html.DisplayFor(modelItem => item.Session.Id)
+                    </a>
+                </td>
+                <td>
+                    <a asp-area="Movies" asp-page="/Details" asp-route-id="@item.User.Id">
+                        @Html.DisplayFor(modelItem => item.User.Email)
+                    </a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Seat)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id" title="Detalhes"><i class="fas fa-info mx-2"></i></a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" title="Apagar"><i class="fas fa-trash"></i></a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

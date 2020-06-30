@@ -1,0 +1,65 @@
+﻿@model IEnumerable<CineGest.Models.Tickets>
+
+@{
+    ViewData["Title"] = "Bilhetes";
+}
+
+<h1>Bilhetes</h1>
+
+<table class="table mt-3">
+    <thead>
+        <tr>
+            <th>
+                Filme
+            </th>
+            <th>
+                Cinema
+            </th>
+            <th>
+                Cidade
+            </th>
+            <th>
+                Localização
+            </th>
+            <th>
+                Data de início
+            </th>
+            <th>
+                Data de fim
+            </th>
+            <th>
+                Lugar
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-area="Movies" asp-page="/Details" asp-route-id="@item.Session.Movie.Id">
+                        @Html.DisplayFor(modelItem => item.Session.Movie.Name)
+                    </a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Session.Cinema.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Session.Cinema.City)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Session.Cinema.Location)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Session.Start)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Session.End)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Seat)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

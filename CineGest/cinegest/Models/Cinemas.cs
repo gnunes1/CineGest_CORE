@@ -5,6 +5,11 @@ namespace CineGest.Models
 {
     public class Cinemas
     {
+        public Cinemas()
+        {
+            SessionsList = new HashSet<Sessions>();
+        }
+
         /// <summary>
         /// Referencia o cinema
         /// </summary>
