@@ -17,7 +17,7 @@ else
             {
                 <div class="carousel-@(i == 0 ? "item active" : "item")">
                     <a asp-action="Details" asp-route-id="@item[0]" asp-controller="Movies">
-                        <img src=@item[1] class="img-fluid" alt=@item[2] title=@item[2]>
+                        <img src="~/images/movies/@item[1]" class="img-fluid" alt=@item[2] title=@item[2]>
                     </a>
                 </div>
                 i = i + 1;
@@ -85,7 +85,7 @@ else
                         @for (k = j; k < movieList.Count; k++)
                         {
                             <a asp-action="Details" asp-route-id="@movieList[k][0]" asp-controller="Movies">
-                                <img src=@movieList[k][2] class="img-fluid movieList-img" alt=@movieList[k][1] title=@movieList[k][1]>
+                                <img src="~/images/movies/@movieList[k][2]" class="img-fluid movieList-img" alt=@movieList[k][1] title=@movieList[k][1]>
                             </a>
                             if ((k + 1) % 4 == 0) break;
 

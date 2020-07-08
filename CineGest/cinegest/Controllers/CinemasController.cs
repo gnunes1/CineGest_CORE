@@ -70,6 +70,12 @@ namespace cinegest.Controllers
 
             if (ModelState.IsValid)
             {
+                if (_context.Cinemas.Where(c => c.Name == cinema.Name).Any())//verifica se existe algum cinema com o mesmo nome
+                {
+                    ViewData["message"] = "Já existe um cinema com o mesmo nome.";
+                    return View(cinema);
+                }
+
                 _context.Add(cinema);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -109,6 +115,18 @@ namespace cinegest.Controllers
             {
                 try
                 {
+                    if (await _context.Sessions.Where(s => s.Movie.Id == id).AnyAsync())
+                    {
+                        ViewData["message"] = "Não é possivel alterar o cinema, tendo sessões agendadas para o mesmo.";
+                        return View(cinema);
+                    }
+
+                    if (_context.Cinemas.Where(c => c.Name == cinema.Name && c.Id != cinema.Id).Any())//verifica se existe algum cinema com o mesmo nome
+                    {
+                        ViewData["message"] = "Já existe um cinema com o mesmo nome.";
+                        return View(cinema);
+                    }
+
                     _context.Update(cinema);
                     await _context.SaveChangesAsync();
                 }
@@ -156,7 +174,7 @@ namespace cinegest.Controllers
 
             if (await _context.Sessions.Where(s => s.Cinema.Id == id).AnyAsync())
             {
-                ViewData["message"] = "Não é possivel apagar o cinema com sessões agendadas.";
+                ViewData["message"] = "Não é possivel apagar o cinema, tendo sessões agendadas para o mesmo.";
                 return View(cinema);
             }
 

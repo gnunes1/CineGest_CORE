@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -24,8 +23,6 @@ namespace CineGest.Models
         /// </summary>
         [Required(ErrorMessage = "O email é de preenchimento obrigatório.")]
         [Display(Name = "Email")]
-        [Remote(action: "VerifyEmail", controller: "Users")]
-
         public string Email { get; set; }
 
         /// <summary>

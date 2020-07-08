@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace CineGest.Models
@@ -21,11 +20,10 @@ namespace CineGest.Models
         /// <summary>
         /// Nome do cinema
         /// </summary>
-        [RegularExpression("^[a-z][0-9]$", ErrorMessage = "O nome tem de começar por uma letra.")]
+        [RegularExpression("^[a-zA-Z]+[a-zA-Z0-9]*$", ErrorMessage = "O nome tem de começar por uma letra.")]
         [Required(ErrorMessage = "O nome é de preenchimento obrigatório.")]
         [Display(Name = "Nome")]
         [StringLength(40, ErrorMessage = "O nome não pode ter mais de {1} carateres.")]
-        [Remote(action: "VerifyName", controller: "Cinemas")]
         public string Name { get; set; }
 
         /// <summary>

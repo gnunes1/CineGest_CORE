@@ -1,5 +1,6 @@
 ﻿using cinegest.Data;
 using CineGest.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,16 +13,18 @@ namespace cinegest.Controllers
     public class UsersController : Controller
     {
         private readonly CinegestDB _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public UsersController(CinegestDB context)
+        public UsersController(CinegestDB context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Users
         public async Task<IActionResult> Index()
         {
-            return View(await _context.User.ToListAsync());
+            return View(await _context.User.Where(u => u.ApplicationUser != _userManager.GetUserId(User)).ToListAsync());
         }
 
         // GET: Users/Details/5
@@ -59,15 +62,21 @@ namespace cinegest.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Email,Name,DoB,Avatar,Role,ApplicationUser")] Users users)
+        public async Task<IActionResult> Create([Bind("Id,Email,Name,DoB,Avatar,Role,ApplicationUser")] Users user)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(users);
+                if (_context.User.Where(u => u.Email == user.Email).Any())//verifica se existe algum utilizador com o mesmo email
+                {
+                    ViewData["message"] = "Já existe um utilizador com o mesmo email.";
+                    return View(user);
+                }
+
+                _context.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(users);
+            return View(user);
         }
 
         // GET: Users/Edit/5
@@ -98,23 +107,29 @@ namespace cinegest.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Email,Name,DoB,Avatar,Role,ApplicationUser")] Users users)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Email,Name,DoB,Avatar,Role,ApplicationUser")] Users user)
         {
-            if (id != users.Id)
+            if (id != user.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
+                if (_context.User.Where(u => u.Email == user.Email && u.Id != user.Id).Any())//verifica se existe algum utilizador com o mesmo email
+                {
+                    ViewData["message"] = "Já existe um utilizador com o mesmo email.";
+                    return View(user);
+                }
+
                 try
                 {
-                    _context.Update(users);
+                    _context.Update(user);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UsersExists(users.Id))
+                    if (!UsersExists(user.Id))
                     {
                         return NotFound();
                     }
@@ -125,7 +140,7 @@ namespace cinegest.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(users);
+            return View(user);
         }
 
         // GET: Users/Delete/5
@@ -162,15 +177,5 @@ namespace cinegest.Controllers
             return _context.User.Any(e => e.Id == id);
         }
 
-        [AcceptVerbs("GET", "POST")]
-        public IActionResult VerifyEmail(string email)
-        {
-            if (_context.User.Where(c => c.Email == email).Any())
-            {
-                return Json($"Já existe um filme com o mesmo nome.");
-            }
-
-            return Json(true);
-        }
     }
 }
