@@ -1,8 +1,10 @@
-﻿@{ ViewData["Title"] = "Home Page"; }
+﻿@model IEnumerable<CineGest.Models.Movies>
+
+@{ ViewData["Title"] = "Home Page"; }
 
 <h3 class="mt-4 text-center">EM DESTAQUE</h3>
 
-@if (Enumerable.Count(ViewBag.Highlighted) == 0) //não existem filmes em destaque
+@if (!Model.Any()) //não existem filmes em destaque
 {
     <div class="text-center align-content-center" style="height: 50vh; display: grid;">
         <h2>Sem filmes em destaque</h2>
@@ -13,26 +15,27 @@ else
     <div class="carousel slide data-interval=5000" data-ride="carousel">
         <div class="carousel-inner">
             @{ var i = 0;}
-            @foreach (System.Collections.ArrayList item in ViewBag.Highlighted) //cria um slide para cada filme
+
+            @foreach (var item in Model.Where(m => m.Highlighted == true))
             {
                 <div class="carousel-@(i == 0 ? "item active" : "item")">
-                    <a asp-action="Details" asp-route-id="@item[0]" asp-controller="Movies">
-                        <img src="~/images/movies/@item[1]" class="img-fluid" alt=@item[2] title=@item[2]>
+                    <a asp-action="Details" asp-route-id="@item.Id" asp-controller="Movies">
+                        <img src="~/images/movies/@item.Poster" class="img-fluid" alt=@item.Name title=@item.Name>
                     </a>
                 </div>
-                i = i + 1;
 
-
-                if (item[3].ToString() != "01-01-0001" && item[4].ToString() != "01-01-0001")
+                @if (item.SessionsList.Count > 0)
                 {
+                    var min = item.SessionsList.Min(s => s.Start).ToString("dd-MM-yyyy");
+                    var max = item.SessionsList.Max(s => s.End).ToString("dd-MM-yyyy");
+
                     <div class="carousel-caption d-none d-md-block">
-                        <h5 class="text-warning">Disponível de @item[3] a @item[4]</h5>
+                        <h5 class="text-warning">Disponível de @min a @max</h5>
                     </div>
                 }
+                i++;
             }
-
         </div>
-
     </div>
 }
 
@@ -62,38 +65,33 @@ else
 </div>
 
 
-@{ var movieList = (List<System.Collections.ArrayList>)ViewBag.Movies;}
-
 <div class="mt-4">
     <h2 class="movieList-title">Lista de Filmes</h2>
 
-    @if (movieList.Count == 0) //não existem filmes
+    @if (!Model.Any()) //não existem filmes
     {
         <div class="text-center align-content-center" style="height: 30vh; display: grid;">
             <h2>Sem filmes</h2>
         </div>
     }
-    else //cria slides de 4 filmes
+    else //cria slides de 6 filmes
     {
-        <div class="carousel slide" id="movieCarousel" data-interval="false" wrap="false">
+        <div class="carousel slide" id="movieCarousel" data-interval="false" touch="true" style="height: 30vh;">
             <div class="carousel-inner">
-
-                @for (int j = 0; j < movieList.Count; j++)
+                @for (int j = 0; j < Model.Count(); j++)
                 {
                     int k;
                     <div class="carousel-@(j == 0 ? "item active" : "item")">
-                        @for (k = j; k < movieList.Count; k++)
+                        @for (k = j; k < Model.Count(); k++)
                         {
-                            <a asp-action="Details" asp-route-id="@movieList[k][0]" asp-controller="Movies">
-                                <img src="~/images/movies/@movieList[k][2]" class="img-fluid movieList-img" alt=@movieList[k][1] title=@movieList[k][1]>
+                            <a asp-action="Details" asp-route-id="@Model.ElementAt(k).Id" asp-controller="Movies">
+                                <img src="~/images/movies/@Model.ElementAt(k).Poster" class="img-fluid movieList-img mx-3" alt=@Model.ElementAt(k).Name title=@Model.ElementAt(k).Name>
                             </a>
-                            if ((k + 1) % 4 == 0) break;
-
+                            if ((k + 1) % 6 == 0) break;
                         }
                     </div>
                     j = k;
                 }
-
                 <a class="carousel-control-prev" href="#movieCarousel" role="button" data-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="sr-only">Previous</span>

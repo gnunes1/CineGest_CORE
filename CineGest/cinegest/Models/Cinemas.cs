@@ -20,7 +20,7 @@ namespace CineGest.Models
         /// <summary>
         /// Nome do cinema
         /// </summary>
-        [RegularExpression("^[a-zA-Z]+[a-zA-Z0-9]*$", ErrorMessage = "O nome tem de começar por uma letra.")]
+        [RegularExpression("^([a-zA-Z].*)", ErrorMessage = "O nome é composto apenas por letras.")]
         [Required(ErrorMessage = "O nome é de preenchimento obrigatório.")]
         [Display(Name = "Nome")]
         [StringLength(40, ErrorMessage = "O nome não pode ter mais de {1} carateres.")]

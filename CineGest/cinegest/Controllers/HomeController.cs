@@ -3,9 +3,7 @@ using cinegest.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System.Collections;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace cinegest.Controllers
@@ -23,21 +21,8 @@ namespace cinegest.Controllers
 
         public async Task<IActionResult> IndexAsync()
         {
-            var highlighted = await _context.Movies.Where(m => m.Highlighted == true)
-                .Select(m => new ArrayList
-                {
-                        m.Id,
-                        m.Poster,
-                        m.Name,
-                        _context.Sessions.Where(s => s.Movie.Id == m.Id).Min(s => s.Start).ToString("dd-MM-yyyy"),
-                        _context.Sessions.Where(s => s.Movie.Id == m.Id).Max(s => s.End).ToString("dd-MM-yyyy")
-                })
-                .Distinct().ToListAsync();
-
-            ViewBag.Highlighted = highlighted;
-            ViewBag.Movies = await _context.Movies.Select(m => new ArrayList { m.Id, m.Name, m.Poster }).ToListAsync();
-
-            return View();
+            var movies = await _context.Movies.Include(m => m.SessionsList).ToListAsync();
+            return View(movies);
         }
 
         public IActionResult Privacy()

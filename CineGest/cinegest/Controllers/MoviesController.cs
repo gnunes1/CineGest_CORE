@@ -74,9 +74,8 @@ namespace cinegest.Controllers
                     ViewData["message"] = "Já existe um filme com o mesmo nome.";
                     return View(movie);
                 }
-
                 //se o poster não fôr imagem usa-se a imagem default
-                if (!Poster.ContentType.Contains("image"))
+                if (Poster == null || !Poster.ContentType.Contains("image"))
                 {
                     movie.Poster = "default.png";
 
@@ -126,8 +125,10 @@ namespace cinegest.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Genres,Duration,Min_age,Highlighted")] Movies movie, IFormFile Poster)
+        public async Task<IActionResult> Edit(int id, int Id, string Name, string Description, string Genres, int Duration, int Min_age, bool Highlighted, IFormFile Poster)
         {
+            Movies movie = _context.Movies.Find(Id);
+
             if (id != movie.Id)
             {
                 RedirectToAction(nameof(Index));
@@ -165,6 +166,10 @@ namespace cinegest.Controllers
                     }
                     else
                     { //update atualiza a imagem
+
+                        //apaga o antigo poster excepto se for o poster default
+                        if (movie.Poster != "default.png") System.IO.File.Delete(_environment.WebRootPath + "/images/movies/" + movie.Poster);
+
                         Guid g;
                         g = Guid.NewGuid();
 
@@ -177,6 +182,13 @@ namespace cinegest.Controllers
                         using var fileStream = new FileStream(_environment.WebRootPath + "/images/movies/" + g.ToString() + extensao, FileMode.Create);
                         await Poster.CopyToAsync(fileStream);
                     }
+
+                    movie.Name = Name;
+                    movie.Description = Description;
+                    movie.Genres = Genres;
+                    movie.Duration = Duration;
+                    movie.Highlighted = Highlighted;
+                    movie.Min_age = Min_age;
 
                     _context.Update(movie);
                     await _context.SaveChangesAsync();

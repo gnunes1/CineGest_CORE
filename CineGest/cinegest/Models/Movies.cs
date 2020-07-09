@@ -20,7 +20,7 @@ namespace CineGest.Models
         /// <summary>
         /// Nome do filme
         /// </summary>
-        [RegularExpression("^[a-zA-Z]+[a-zA-Z0-9]*$", ErrorMessage = "O nome tem de começar por uma letra.")]
+        [RegularExpression("^([a-zA-Z].*)", ErrorMessage = "O nome é composto apenas por letras.")]
         [Required(ErrorMessage = "O nome é de preenchimento obrigatório.")]
         [StringLength(40, ErrorMessage = "O nome não pode ter mais de {1} carateres.")]
         [Display(Name = "Nome")]
@@ -34,10 +34,11 @@ namespace CineGest.Models
         public string Description { get; set; }
 
         /// <summary>
-        /// Categorias do filme
+        /// gêneros do filme
         /// </summary>
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório.")]
         [Display(Name = "Gêneros")]
+        [RegularExpression("[a-zA-Z]+(;\\s[a-zA-Z]+)*", ErrorMessage = "Cada gênero só pode conter letras e têm de ser separados com \";\" seguido de um espaço")]
         public string Genres { get; set; }
 
         /// <summary>
