@@ -24,7 +24,10 @@ namespace cinegest.Controllers
         // GET: Tickets
         public async Task<IActionResult> Index()
         {
-            var cinegestDB = _context.Tickets.Include(t => t.Session).Include(t => t.User);
+            var cinegestDB = _context.Tickets.Include(t => t.Session)
+                .Include(t => t.Session).ThenInclude(s => s.Movie)
+                .Include(t => t.Session).ThenInclude(s => s.Cinema)
+                .Include(t => t.User);
             return View(await cinegestDB.ToListAsync());
         }
 

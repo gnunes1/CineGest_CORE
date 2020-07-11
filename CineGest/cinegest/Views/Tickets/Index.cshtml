@@ -6,14 +6,29 @@
 
 <h1>Bilhetes</h1>
 
-<table class="table">
+<table class="table text-center">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Session.Id)
+                Email
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.User.Email)
+                Filme
+            </th>
+            <th>
+                Cinema
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Session.Cinema.City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Session.Cinema.Location)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Session.Start)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Session.Start)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Seat)
@@ -28,20 +43,36 @@
         {
             <tr>
                 <td>
-                    <a asp-controller="Sessions" asp-action="Details" asp-route-id="@item.Session.Id">
-                        @Html.DisplayFor(modelItem => item.Session.Id)
+                    <a asp-controller="Users" asp-action="Details" asp-route-id="@item.UserFK">
+                        @Html.DisplayFor(modelItem => item.User.Email)
                     </a>
                 </td>
                 <td>
-                    <a asp-controller="Users" asp-action="Details" asp-route-id="@item.User.Id">
-                        @Html.DisplayFor(modelItem => item.User.Email)
+                    <a asp-controller="Movies" asp-action="Details" asp-route-id="@item.Session.MovieFK">
+                        @Html.DisplayFor(modelItem => item.Session.Movie.Name)
                     </a>
+                </td>
+                <td>
+                    <a asp-controller="Cinemas" asp-action="Details" asp-route-id="@item.Session.CinemaFK">
+                        @Html.DisplayFor(modelItem => item.Session.Cinema.Name)
+                    </a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Session.Cinema.City)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Session.Cinema.Location)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Session.Start)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Session.End)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Seat)
                 </td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.Id" title="Detalhes"><i class="fas fa-info mx-2"></i></a>
                     <a asp-action="Delete" asp-route-id="@item.Id" title="Apagar"><i class="fas fa-trash"></i></a>
                 </td>
             </tr>

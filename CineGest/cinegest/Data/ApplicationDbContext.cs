@@ -75,7 +75,7 @@ namespace cinegest.Data
                 Name = "Admin",
                 Email = "admin@admin",
                 Role = "Admin",
-                DoB = DateTime.UtcNow,
+                DoB = DateTime.Now,
                 ApplicationUser = "1",
                 Avatar = "default.png"
             });

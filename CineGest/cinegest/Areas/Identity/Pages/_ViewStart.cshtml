@@ -1,3 +1,12 @@
 ﻿@{
-    Layout = "/Views/Shared/_Layout.cshtml";
+
+    if (Context.Request.RouteValues.Values.ElementAt(0).ToString() == "/Account/Register" ||
+        Context.Request.RouteValues.Values.ElementAt(0).ToString() == "/Account/Login")
+    {
+        Layout = "/Views/Shared/_LayoutRegisterLogin.cshtml";
+    }
+    else
+    {
+        Layout = "/Views/Shared/_Layout.cshtml";
+    }
 }
