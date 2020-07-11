@@ -3,8 +3,10 @@ using CineGest.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.IO;
 using System.Linq;
@@ -20,11 +22,14 @@ namespace cinegest.Controllers
         public static IWebHostEnvironment _environment;
 
         private readonly CinegestDB _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public MoviesController(CinegestDB context, IWebHostEnvironment environment)
+
+        public MoviesController(CinegestDB context, IWebHostEnvironment environment, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _environment = environment;
+            _userManager = userManager;
         }
 
         // GET: Movies
@@ -42,8 +47,24 @@ namespace cinegest.Controllers
                 RedirectToAction(nameof(Index));
             }
 
-            var movie = await _context.Movies
-                .FirstOrDefaultAsync(m => m.Id == id);
+            ViewData["User"] = _context.User.Where(u => u.ApplicationUser == _userManager.GetUserId(User)).Select(u => u.Id).FirstOrDefault();
+
+            var movie = new Movies();
+            if (User.Identity.IsAuthenticated)
+            {
+                movie = await _context.Movies
+                    .Include(m => m.SessionsList)
+                        .ThenInclude(s => s.Cinema)
+                    .Include(m => m.SessionsList)
+                        .ThenInclude(s => s.TicketsList)
+                    .Where(m => m.Id == id)
+                    .FirstOrDefaultAsync();
+            }
+            else
+            {
+                movie = await _context.Movies.Include(m => m.SessionsList).ThenInclude(s => s.Cinema).FirstOrDefaultAsync(m => m.Id == id);
+            }
+
             if (movie == null)
             {
                 RedirectToAction(nameof(Index));

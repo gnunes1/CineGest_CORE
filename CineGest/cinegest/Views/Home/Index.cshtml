@@ -4,7 +4,7 @@
 
 <h3 class="mt-4 text-center">EM DESTAQUE</h3>
 
-@if (!Model.Any()) //não existem filmes em destaque
+@if (!Model.Where(m => m.Highlighted == true).Any()) //não existem filmes em destaque
 {
     <div class="text-center align-content-center" style="height: 50vh; display: grid;">
         <h2>Sem filmes em destaque</h2>
@@ -22,17 +22,17 @@ else
                     <a asp-action="Details" asp-route-id="@item.Id" asp-controller="Movies">
                         <img src="~/images/movies/@item.Poster" class="img-fluid" alt=@item.Name title=@item.Name>
                     </a>
+
+                    @if (item.SessionsList.Count > 0)//adiciona uma legenda com a data da sessão mais próxima e a mais afastada
+                    {
+                        var min = item.SessionsList.Min(s => s.Start).ToString("dd-MM-yyyy");
+                        var max = item.SessionsList.Max(s => s.End).ToString("dd-MM-yyyy");
+
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5 class="text-warning">Disponível de @min a @max</h5>
+                        </div>
+                    }
                 </div>
-
-                @if (item.SessionsList.Count > 0)
-                {
-                    var min = item.SessionsList.Min(s => s.Start).ToString("dd-MM-yyyy");
-                    var max = item.SessionsList.Max(s => s.End).ToString("dd-MM-yyyy");
-
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5 class="text-warning">Disponível de @min a @max</h5>
-                    </div>
-                }
                 i++;
             }
         </div>

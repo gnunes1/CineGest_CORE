@@ -1,60 +1,140 @@
 ﻿@model CineGest.Models.Movies
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalhes Filme";
 }
 
-<h1>Details</h1>
+<form asp-action="Create" asp-controller="Tickets">
+    <div class="row">
+        @*Detalhes do filme*@
+        <div class="col-2">
+            <dl class="row">
+                <dd class="col-sm-12">
+                    <img src="~/images/movies/@Html.DisplayFor(model => model.Poster)" style="max-width:inherit;">
+                    @if (User.Identity.IsAuthenticated && Model.SessionsList.Count > 0)
+                    {
+                        <button type="submit" class="btn btn-warning btn-block" style="max-width:inherit;">Comprar</button>
+                    }
+                </dd>
+                <dt class="col-sm-auto mt-2">
+                    @Html.DisplayNameFor(model => model.Description)
+                </dt>
+                <dd class="col-sm-auto w-100">
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
+                <dt class="col-sm-auto">
+                    @Html.DisplayNameFor(model => model.Genres)
+                </dt>
+                <dd class="col-sm-auto w-100">
+                    @Html.DisplayFor(model => model.Genres)
+                </dd>
+                <dt class="col-sm-auto">
+                    @Html.DisplayNameFor(model => model.Duration)
+                </dt>
+                <dd class="col-sm-auto w-100">
+                    @Html.DisplayFor(model => model.Duration)
+                </dd>
+                <dt class="col-sm-auto">
+                    @Html.DisplayNameFor(model => model.Min_age)
+                </dt>
+                <dd class="col-sm-auto w-100">
+                    @Html.DisplayFor(model => model.Min_age)
+                </dd>
+            </dl>
+        </div>
 
-<div>
-    <h4>Movies</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Genres)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Genres)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Poster)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Poster)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Duration)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Duration)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Min_age)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Min_age)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Highlighted)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Highlighted)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+        @*tabela sessões para o filme*@
+        <div class="col">
+            <h3>
+                Horários - @Html.DisplayFor(model => model.Name)
+            </h3>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div style="height: 70vh; overflow-y: auto;">
+                <table class="table text-center">
+                    <thead>
+                        <tr>
+                            @if (User.Identity.IsAuthenticated && Model.SessionsList.Count > 0)
+                            {
+                                <th>
+                                    Comprar
+                                </th>
+                            }
+                            <th>
+                                Cinema
+                            </th>
+                            <th>
+                                Cidade
+                            </th>
+                            <th>
+                                Localização
+                            </th>
+                            <th>
+                                Data de início
+                            </th>
+                            <th>
+                                Data de fim
+                            </th>
+                            <th>
+                                Lugares ocupados
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.SessionsList
+                     .OrderBy(s => s.Cinema)
+                     .ThenBy(s => s.Cinema.City)
+                     .ThenBy(s => s.Cinema.Location)
+                     .ThenBy(s => s.Start)
+                     .Where(s => s.Start.Ticks > DateTime.Now.Ticks))
+                        {
+                            <tr>
+                                @if (User.Identity.IsAuthenticated && Model.SessionsList.Count > 0)
+                                {
+
+                                    if (item.TicketsList.Where(t => t.SessionFK == item.Id && t.UserFK == ViewBag.User).Any())
+                                    {
+                                        <td>
+                                            <span class="text-warning">Comprado</span>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            <input type="radio" name="SessionFK" value=@item.Id required />
+                                        </td>
+                                    }
+                                }
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Cinema.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Cinema.City)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Cinema.Location)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Start)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.End)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Occupated_seats)/@Html.DisplayFor(modelItem => item.Cinema.Capacity)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</form>
+
+@if (User.IsInRole("Admin"))
+{
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id">Editar</a> |
+        <a asp-action="Index">Voltar à tabela</a>
+    </div>
+}

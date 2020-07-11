@@ -20,7 +20,7 @@ namespace CineGest.Models
         /// <summary>
         /// Nome do cinema
         /// </summary>
-        [RegularExpression("^([a-zA-Z].*)", ErrorMessage = "O nome é composto apenas por letras.")]
+        [RegularExpression("^([A-ZÓÂÍa-zçáéíóúàèìòùãõäëïöüâêîôûñ].*)", ErrorMessage = "O nome tem de começar por uma letra.")]
         [Required(ErrorMessage = "O nome é de preenchimento obrigatório.")]
         [Display(Name = "Nome")]
         [StringLength(40, ErrorMessage = "O nome não pode ter mais de {1} carateres.")]
@@ -38,6 +38,7 @@ namespace CineGest.Models
         /// </summary>
         [Required(ErrorMessage = "Este campo é de preenchimento obrigatório.")]
         [Display(Name = "Cidade")]
+        [RegularExpression("^([A-ZÓÂÍa-zçáéíóúàèìòùãõäëïöüâêîôûñ].*)", ErrorMessage = "O nome da cidade tem de começar por uma letra.")]
         public string City { get; set; }
 
         /// <summary>

@@ -10,10 +10,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Session.Movie.Name)
+                Filme
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Session.Cinema.Name)
+                Cinema
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Session.Cinema.City)
@@ -37,12 +37,14 @@
         {
             <tr>
                 <td>
-                    <a asp-area="Movies" asp-page="/Details" asp-route-id="@item.Session.Movie.Id">
+                    <a asp-controller="Movies" asp-action="Details" asp-route-id="@item.Session.MovieFK">
                         @Html.DisplayFor(modelItem => item.Session.Movie.Name)
                     </a>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Session.Cinema.Name)
+                    <a asp-controller="Cinemas" asp-action="Details" asp-route-id="@item.Session.CinemaFK">
+                        @Html.DisplayFor(modelItem => item.Session.Cinema.Name)
+                    </a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Session.Cinema.City)

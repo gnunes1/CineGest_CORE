@@ -24,7 +24,6 @@ namespace CineGest.Models
         /// <summary>
         /// Relaciona o utilizador com a sessão do filme
         /// </summary>
-        [Required(ErrorMessage = "Este campo é de preenchimento obrigatório.")]
         [Display(Name = "Utilizador")]
         [ForeignKey(nameof(User))]
         public int UserFK { get; set; }
@@ -33,7 +32,6 @@ namespace CineGest.Models
         /// <summary>
         /// Lugar respetivo ao bilhete comprado para a sessão
         /// </summary>
-        [Required(ErrorMessage = "Este é de preenchimento obrigatório.")]
         [Display(Name = "Lugar")]
         public int Seat { get; set; }
     }

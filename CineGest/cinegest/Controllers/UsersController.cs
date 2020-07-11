@@ -87,8 +87,8 @@ namespace cinegest.Controllers
                 return NotFound();
             }
 
-            var users = await _context.User.FindAsync(id);
-            if (users == null)
+            var user = await _context.User.FindAsync(id);
+            if (user == null)
             {
                 return NotFound();
             }
@@ -99,7 +99,7 @@ namespace cinegest.Controllers
             };
 
             ViewData["Roles"] = new SelectList(list, "Value", "Text");
-            return View(users);
+            return View(user);
         }
 
         // POST: Users/Edit/5

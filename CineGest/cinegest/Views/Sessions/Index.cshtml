@@ -39,12 +39,12 @@
         {
             <tr>
                 <td>
-                    <a asp-area="Cinemas" asp-page="/Details" asp-route-id=@item.Cinema.Id>
+                    <a asp-controller="Cinemas" asp-action="Details" asp-route-id=@item.Cinema.Id>
                         @Html.DisplayFor(modelItem => item.Cinema.Name)
                     </a>
                 </td>
                 <td>
-                    <a asp-area="Movies" asp-page="/Details" asp-route-id="@item.Movie.Id">
+                    <a asp-controller="Movies" asp-action="Details" asp-route-id="@item.Movie.Id">
                         @Html.DisplayFor(modelItem => item.Movie.Name)
                     </a>
                 </td>
@@ -58,7 +58,6 @@
                     @Html.DisplayFor(modelItem => item.Occupated_seats)
                 </td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.Id" title="Detalhes"><i class="fas fa-info mx-2"></i></a>
                     <a asp-action="Delete" asp-route-id="@item.Id" title="Apagar"><i class="fas fa-trash"></i></a>
                 </td>
             </tr>

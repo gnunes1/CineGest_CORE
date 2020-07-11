@@ -14,7 +14,7 @@
 
         </dt>
         <dd class="col-sm-10">
-            <a asp-area="Cinemas" asp-page="/Details" asp-route-id="@Model.Cinema.Id">
+            <a asp-controller="Cinemas" asp-action="Details" asp-route-id="@Model.Cinema.Id">
                 @Html.DisplayFor(model => model.Cinema.Name)
             </a>
         </dd>
@@ -22,7 +22,7 @@
             @Html.DisplayNameFor(model => model.MovieFK)
         </dt>
         <dd class="col-sm-10">
-            <a asp-area="Movies" asp-page="/Details" asp-route-id="@Model.Movie.Id">
+            <a asp-controller="Movies" asp-action="Details" asp-route-id="@Model.Movie.Id">
                 @Html.DisplayFor(model => model.Movie.Name)
             </a>
         </dd>

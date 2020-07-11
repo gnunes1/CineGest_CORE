@@ -25,26 +25,6 @@ namespace cinegest.Controllers
             return View(await cinegestDB.ToListAsync());
         }
 
-        // GET: Sessions/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                RedirectToAction(nameof(Index));
-            }
-
-            var session = await _context.Sessions
-                .Include(s => s.Cinema)
-                .Include(s => s.Movie)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (session == null)
-            {
-                RedirectToAction(nameof(Index));
-            }
-
-            return View(session);
-        }
-
         // GET: Sessions/Create
         public IActionResult Create()
         {
@@ -65,6 +45,8 @@ namespace cinegest.Controllers
                 if (await _context.Sessions.Where(s => session.Start >= s.Start && session.Start <= s.End && s.Cinema.Id == session.CinemaFK).AnyAsync())
                 {
                     ViewData["message"] = "Já existe uma sessão neste cinema entre esta data.";
+                    ViewData["CinemaFK"] = new SelectList(_context.Cinemas, "Id", "Name", session.CinemaFK);
+                    ViewData["MovieFK"] = new SelectList(_context.Movies, "Id", "Name", session.MovieFK);
                     return View();
                 }
 

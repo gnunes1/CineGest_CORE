@@ -6,9 +6,6 @@
 
 <h1>Bilhetes</h1>
 
-<p>
-    <a asp-action="Create">Criar novo registo</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -31,12 +28,12 @@
         {
             <tr>
                 <td>
-                    <a asp-area="Sessions" asp-page="/Details" asp-route-id="@item.Session.Id">
+                    <a asp-controller="Sessions" asp-action="Details" asp-route-id="@item.Session.Id">
                         @Html.DisplayFor(modelItem => item.Session.Id)
                     </a>
                 </td>
                 <td>
-                    <a asp-area="Movies" asp-page="/Details" asp-route-id="@item.User.Id">
+                    <a asp-controller="Users" asp-action="Details" asp-route-id="@item.User.Id">
                         @Html.DisplayFor(modelItem => item.User.Email)
                     </a>
                 </td>
