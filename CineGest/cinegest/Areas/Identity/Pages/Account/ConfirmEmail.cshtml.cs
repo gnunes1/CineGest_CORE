@@ -13,10 +13,12 @@ namespace cinegest.Areas.Identity.Pages.Account
     public class ConfirmEmailModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly CinegestDB _context;
 
-        public ConfirmEmailModel(UserManager<ApplicationUser> userManager)
+        public ConfirmEmailModel(UserManager<ApplicationUser> userManager, CinegestDB context)
         {
             _userManager = userManager;
+            _context = context;
         }
 
         [TempData]
@@ -37,7 +39,22 @@ namespace cinegest.Areas.Identity.Pages.Account
 
             code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
             var result = await _userManager.ConfirmEmailAsync(user, code);
-            StatusMessage = result.Succeeded ? "Obrigado por confirmar o seu email." : "Erro ao confirmar o email.";
+
+            if (result.Succeeded)
+            {
+                StatusMessage = "Obrigado por confirmar o seu email.";
+
+                await _userManager.SetUserNameAsync(user, await _userManager.GetEmailAsync(user));
+                await _userManager.UpdateAsync(user);
+
+                var bdUser = _context.User.Find(user.User);
+                bdUser.Email = await _userManager.GetEmailAsync(user);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                StatusMessage = "Erro ao confirmar o email.";
+            }
             return Page();
         }
     }

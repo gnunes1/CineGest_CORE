@@ -1,18 +1,26 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<cinegest.Data.ApplicationUser> SignInManager
 @inject UserManager<cinegest.Data.ApplicationUser> UserManager
+@inject cinegest.Data.CinegestDB _context
+
 
 <ul class="navbar-nav">
-    @if (SignInManager.IsSignedIn(User))
+    @if (SignInManager.IsSignedIn(User) == true && await UserManager.GetUserAsync(User) != null)
     {
+        var user = await UserManager.GetUserAsync(User);
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Gerir">Olá @User.Identity.Name!</a>
+            <img src="~/images/users/@_context.User.Find(user.User).Avatar" alt="Avatar" class="rounded-circle mr-1 mt-1" style="width:30px; height:30px;">
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Gerir">Olá @user.Nome!</a>
         </li>
         <li class="nav-item">
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                 <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
             </form>
         </li>
+
     }
     else
     {

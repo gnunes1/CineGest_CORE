@@ -1,10 +1,12 @@
 ﻿using cinegest.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -17,15 +19,22 @@ namespace cinegest.Areas.Identity.Pages.Account
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly CinegestDB _context;
         private readonly ILogger<LoginModel> _logger;
+        public static IWebHostEnvironment _environment;
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager,
+
+        public LoginModel(CinegestDB context,
+            SignInManager<ApplicationUser> signInManager,
             ILogger<LoginModel> logger,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            IWebHostEnvironment environment)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _context = context;
+            _environment = environment;
         }
 
         [BindProperty]
@@ -78,6 +87,9 @@ namespace cinegest.Areas.Identity.Pages.Account
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+
+                Console.WriteLine(result);
+
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
@@ -90,6 +102,33 @@ namespace cinegest.Areas.Identity.Pages.Account
                 if (result.IsLockedOut)
                 {
                     _logger.LogWarning("User account locked out.");
+
+                    //apaga o utilizador ----------------------------
+                    var user = _context.Users.Where(u => u.UserName == Input.Email).FirstOrDefault();
+
+                    var result2 = await _userManager.DeleteAsync(user);
+                    var userId = await _userManager.GetUserIdAsync(user);
+                    if (!result2.Succeeded)
+                    {
+                        throw new InvalidOperationException($"Unexpected error occurred deleting user with ID '{userId}'.");
+                    }
+
+                    var dbUser = _context.User.Find(user.User);
+
+                    foreach (var item in dbUser.TicketsList) //apaga os bilhetes
+                    {
+                        dbUser.TicketsList.Remove(item);
+                        if (item.Session.Start.Ticks > DateTime.Now.Ticks) item.Session.Occupated_seats -= 1;
+                    }
+
+                    _context.User.Remove(dbUser); //apaga o utilizador
+                    if (dbUser.Avatar != "default.png") System.IO.File.Delete(_environment.WebRootPath + "/images/users/" + dbUser.Avatar); // apaga a fotografia
+
+                    await _context.SaveChangesAsync();
+
+                    _logger.LogInformation("User with ID '{UserId}' was deleted.", userId);
+                    //----------------------------------------
+
                     return RedirectToPage("./Lockout");
                 }
                 else

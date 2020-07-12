@@ -40,6 +40,7 @@ namespace CineGest.Models
         /// </summary>
         [Required(ErrorMessage = "A data de nascimento é de preenchimento obrigatório.")]
         [Display(Name = "Data de nascimento")]
+        [DataType(DataType.Date)]
         public DateTime DoB { get; set; }
 
         /// <summary>
@@ -53,11 +54,6 @@ namespace CineGest.Models
         /// </summary>
         [Display(Name = "Cargo")]
         public string Role { get; set; }
-
-        /// <summary>
-        /// utilizador do tipo applicationUser, usado para login, entre outras funções
-        /// </summary>
-        public string ApplicationUser { get; set; }
 
         /// <summary>
         /// Lista de bilhetes associados ao utilizador

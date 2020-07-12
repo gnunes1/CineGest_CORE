@@ -11,10 +11,11 @@
             <dl class="row">
                 <dd class="col-sm-12">
                     <img src="~/images/movies/@Html.DisplayFor(model => model.Poster)" style="max-width:inherit;" alt="Poster">
-                    @if (User.Identity.IsAuthenticated && Model.SessionsList.Count > 0)
+                    @if (User.Identity.IsAuthenticated && Model.SessionsList.Where(s => s.Start.Ticks > DateTime.Now.Ticks).Count() > 0)
                     {
                         <button type="submit" class="btn btn-warning btn-block" style="max-width:inherit;">Comprar</button>
                     }
+                    <span class="text-danger">@TempData["Message"]</span>
                 </dd>
                 <dt class="col-sm-auto mt-2">
                     @Html.DisplayNameFor(model => model.Description)
@@ -53,7 +54,7 @@
                 <table class="table text-center">
                     <thead>
                         <tr>
-                            @if (User.Identity.IsAuthenticated && Model.SessionsList.Count > 0)
+                            @if (User.Identity.IsAuthenticated && Model.SessionsList.Count() > 0)
                             {
                                 <th>
                                     Comprar
@@ -80,15 +81,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model.SessionsList
-                    .OrderBy(s => s.Cinema)
-                    .ThenBy(s => s.Cinema.City)
-                    .ThenBy(s => s.Cinema.Location)
-                    .ThenBy(s => s.Start)
-                    .Where(s => s.Start.Ticks > DateTime.Now.Ticks))
+                        @foreach (var item in Model.SessionsList.OrderBy(s => s.Cinema.Name).ThenBy(s => s.Cinema.City).ThenBy(s => s.Cinema.Location).ThenBy(s => s.Start).Where(s => s.Start.Ticks > DateTime.Now.Ticks))
                         {
                             <tr>
-                                @if (User.Identity.IsAuthenticated && Model.SessionsList.Count > 0)
+                                @if (User.Identity.IsAuthenticated && Model.SessionsList.Count() > 0)
                                 {
 
                                     if (item.TicketsList.Where(t => t.SessionFK == item.Id && t.UserFK == ViewBag.User).Any())

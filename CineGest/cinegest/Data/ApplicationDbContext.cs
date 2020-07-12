@@ -22,6 +22,11 @@ namespace cinegest.Data
         /// data de criação do utilizador a registar
         /// </summary>
         public DateTime Timestamp { get; set; }
+
+        /// <summary>
+        /// data de criação do utilizador a registar
+        /// </summary>
+        public int User { get; set; }
     }
 
     /// <summary>
@@ -76,7 +81,6 @@ namespace cinegest.Data
                 Email = "admin@admin",
                 Role = "Admin",
                 DoB = DateTime.Now,
-                ApplicationUser = "1",
                 Avatar = "default.png"
             });
 
@@ -100,8 +104,10 @@ namespace cinegest.Data
                 .HasData(new ApplicationUser
                 {
                     Id = "1",
+                    User = 1,
                     Nome = "Admin",
                     UserName = "admin@admin",
+                    Email = "admin@admin",
                     NormalizedUserName = "admin@admin".ToUpper(),
                     NormalizedEmail = "admin@admin".ToUpper(),
                     EmailConfirmed = true,

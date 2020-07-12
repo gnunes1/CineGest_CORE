@@ -36,6 +36,8 @@
 		<Compile Remove="Data\Migrations\20200630194604_Seed2.Designer.cs" />
 		<Compile Remove="Data\Migrations\20200630194740_AdminSeed.cs" />
 		<Compile Remove="Data\Migrations\20200630194740_AdminSeed.Designer.cs" />
+		<Compile Remove="Data\Migrations\20200712001835_A.cs" />
+		<Compile Remove="Data\Migrations\20200712001835_A.Designer.cs" />
 	</ItemGroup>
 
 	<ItemGroup>

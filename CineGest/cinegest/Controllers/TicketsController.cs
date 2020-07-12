@@ -1,5 +1,6 @@
 ﻿using cinegest.Data;
 using CineGest.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,50 +23,31 @@ namespace cinegest.Controllers
         }
 
         // GET: Tickets
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
-            var cinegestDB = _context.Tickets.Include(t => t.Session)
+            var tickets = _context.Tickets.Include(t => t.Session)
                 .Include(t => t.Session).ThenInclude(s => s.Movie)
                 .Include(t => t.Session).ThenInclude(s => s.Cinema)
                 .Include(t => t.User);
-            return View(await cinegestDB.ToListAsync());
+            return View(await tickets.ToListAsync());
         }
 
         /// <summary>
         /// GET: MyTickets
         /// </summary>
         /// <returns></returns>
+        [Authorize(Roles = "Admin,User")]
         public async Task<IActionResult> MyTickets()
         {
+            var user = await _userManager.GetUserAsync(User);
+
             var cinegestDB = _context.Tickets
-                .Where(s => s.User.ApplicationUser == _userManager.GetUserId(User))
+                .Where(s => s.User.Id == user.User)
                 .Include(t => t.Session)
                 .Include(t => t.Session).ThenInclude(s => s.Movie)
                 .Include(t => t.Session).ThenInclude(s => s.Cinema);
             return View(await cinegestDB.ToListAsync());
-        }
-
-        // GET: Tickets/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var tickets = await _context.Tickets
-                .Include(t => t.Session)
-                    .ThenInclude(s => s.Cinema)
-                .Include(t => t.Session)
-                    .ThenInclude(s => s.Movie)
-                .Include(t => t.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (tickets == null)
-            {
-                return NotFound();
-            }
-
-            return View(tickets);
         }
 
         // POST: Tickets/Create
@@ -73,48 +55,59 @@ namespace cinegest.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,User")]
         public async Task<IActionResult> Create(int SessionFK)
         {
             var session = _context.Sessions.Find(SessionFK);
 
             if (session == null)
             {
-                return BadRequest();
+                return RedirectToAction("Index", "Home");
             }
+            var applicationUser = await _userManager.GetUserAsync(User);
 
-            ViewData["User"] = _context.User.Where(u => u.ApplicationUser == _userManager.GetUserId(User)).Select(u => u.Id).FirstOrDefault();
+            var user = _context.User.Where(u => u.Id == applicationUser.User).FirstOrDefault();
 
-            var movie = await _context.Movies
-                           .Include(m => m.SessionsList)
-                               .ThenInclude(s => s.Cinema)
-                           .Where(m => m.Id == session.MovieFK)
-                           .FirstOrDefaultAsync();
+            ViewData["User"] = user.Id;
+
+            var movie = await _context.Movies.Where(m => m.Id == session.MovieFK).FirstOrDefaultAsync();
 
             //a sessão já começou
             var now = new DateTime().Ticks;
             if (now >= session.Start.Ticks && now <= session.End.Ticks)
             {
-                return RedirectToAction("Details", "Movies", movie);
+                TempData["Message"] = "Esta sessão já está a decorrer.";
+                return Redirect("~/Movies/Details/" + movie.Id);
             }
 
             //o utilizador já tem o bilhete
-            if (_context.Tickets.Where(t => t.Session == session && t.User.ApplicationUser == _userManager.GetUserId(User)).Any())
+            if (_context.Tickets.Where(t => t.Session == session && t.Id == applicationUser.User).Any())
             {
-                return RedirectToAction("Details", "Movies", movie);
+                TempData["Message"] = "Já possui o bilhete para esta sessão.";
+                return Redirect("~/Movies/Details/" + movie.Id);
             }
 
             //capacidade cheia
             if (session.Occupated_seats >= _context.Cinemas.Find(session.CinemaFK).Capacity)
             {
-                return RedirectToAction("Details", "Movies", movie);
+                TempData["Message"] = "Filme com capacidade esgotada. Atualize a página.";
+                return Redirect("~/Movies/Details/" + movie.Id);
+            }
+
+            //sem idade para comprar o bilhete
+            if (DateTime.Now.Ticks < user.DoB.AddYears(session.Movie.Min_age).Ticks)
+            {
+                TempData["Message"] = "Não tem idade para comprar o bilhete para este filme.";
+                return Redirect("~/Movies/Details/" + movie.Id);
             }
 
             try
             {//compra o bilhete
                 Tickets ticket = new Tickets
                 {
+
                     SessionFK = SessionFK,
-                    UserFK = _context.User.Where(u => u.ApplicationUser == _userManager.GetUserId(User)).Select(u => u.Id).FirstOrDefault(),
+                    UserFK = _context.User.Where(u => u.Id == applicationUser.User).Select(u => u.Id).FirstOrDefault(),
                     Seat = session.Occupated_seats + 1
                 };
 
@@ -122,52 +115,64 @@ namespace cinegest.Controllers
 
                 _context.Add(ticket);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Details", "Movies", movie);
+                return Redirect("~/Movies/Details/" + movie.Id);
             }
             catch (Exception)
             {
-                return RedirectToAction("Details", "Movies", movie);
+                TempData["Message"] = "Erro inesperado.";
+                return Redirect("~/Movies/Details/" + movie.Id);
             }
         }
 
         // GET: Tickets/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return View(nameof(Index));
             }
 
-            var tickets = await _context.Tickets
+            var ticket = await _context.Tickets
                 .Include(t => t.Session)
                     .ThenInclude(s => s.Cinema)
                 .Include(t => t.Session)
                     .ThenInclude(s => s.Movie)
                 .Include(t => t.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (tickets == null)
+            if (ticket == null)
             {
-                return NotFound();
+                return View(nameof(Index));
             }
 
-            return View(tickets);
+            return View(ticket);
         }
 
         // POST: Tickets/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var ticket = await _context.Tickets.FindAsync(id);
+            if (ticket == null)
+            {
+                return View(nameof(Index));
+            }
 
-            var session = _context.Sessions.Find(ticket.Session);
-            if (session == null) return View(nameof(Delete));
+            var session = await _context.Sessions.FindAsync(ticket.SessionFK);
+            if (session == null)
+            {
+                ViewData["message"] = "Não foi encontrada nenhuma sessão com este Id";
+                return View(nameof(Delete));
+            }
 
             session.Occupated_seats = session.Occupated_seats - 1;
 
             _context.Tickets.Remove(ticket);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            return Redirect("~/Tickets");
         }
 
         private bool TicketsExists(int id)

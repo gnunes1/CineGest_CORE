@@ -76,6 +76,7 @@ namespace cinegest.Areas.Identity.Pages.Account
 
             [Required(ErrorMessage = "A data de nascimento é de preenchimento obrigatório.")]
             [Display(Name = "Data de nascimento")]
+            [DataType(DataType.Date)]
             public DateTime DoB { get; set; }
         }
 
@@ -87,27 +88,36 @@ namespace cinegest.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            if (_context.User.Where(u => u.Email == Input.Email).Any()) ModelState.AddModelError(string.Empty, "Este Email já está a ser utilizado.");
+
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var applicationUser = new ApplicationUser { UserName = Input.Email, Email = Input.Email, Nome = Input.Nome, Timestamp = DateTime.Now };
+                Users user = new Users //cria o utilizador usado nas relações
+                {
+                    Name = Input.Nome,
+                    Email = Input.Email,
+                    DoB = Input.DoB,
+                    Role = "User",
+                    Avatar = "default.png",
+                };
+                _context.Add(user);
+                await _context.SaveChangesAsync();
+
+                var applicationUser = new ApplicationUser
+                {
+                    UserName = Input.Email,
+                    Email = Input.Email,
+                    Nome = Input.Nome,
+                    Timestamp = DateTime.Now,
+                    User = user.Id
+                };
+
                 var result = await _userManager.CreateAsync(applicationUser, Input.Password);
                 if (result.Succeeded)
                 {
                     //dar permissão ao Application user
                     await _userManager.AddToRoleAsync(applicationUser, "User");
-
-                    Users user = new Users //cria o utilizador usado nas relações
-                    {
-                        Name = applicationUser.Nome,
-                        Email = applicationUser.Email,
-                        DoB = Input.DoB,
-                        Role = "User",
-                        Avatar = "default.png",
-                        ApplicationUser = applicationUser.Id
-                    };
-                    _context.Add(user);
-                    await _context.SaveChangesAsync();
 
                     _logger.LogInformation("Utilizador criado.");
 

@@ -1,5 +1,6 @@
 ﻿using cinegest.Data;
 using CineGest.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace cinegest.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class SessionsController : Controller
     {
         private readonly CinegestDB _context;

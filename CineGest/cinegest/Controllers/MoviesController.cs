@@ -47,7 +47,12 @@ namespace cinegest.Controllers
                 RedirectToAction(nameof(Index));
             }
 
-            ViewData["User"] = _context.User.Where(u => u.ApplicationUser == _userManager.GetUserId(User)).Select(u => u.Id).FirstOrDefault();
+            var applicationUser = await _userManager.GetUserAsync(User);
+
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewData["User"] = _context.User.Where(u => u.Id == applicationUser.User).Select(u => u.Id).FirstOrDefault();
+            }
 
             var movie = new Movies();
             if (User.Identity.IsAuthenticated)
