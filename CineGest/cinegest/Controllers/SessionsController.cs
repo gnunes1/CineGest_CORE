@@ -30,8 +30,8 @@ namespace cinegest.Controllers
         // GET: Sessions/Create
         public IActionResult Create()
         {
-            ViewData["CinemaFK"] = new SelectList(_context.Cinemas, "Id", "Name");
-            ViewData["MovieFK"] = new SelectList(_context.Movies, "Id", "Name");
+            ViewData["CinemaFK"] = new SelectList(_context.Cinemas, "Id", "Name"); //lista de cinemas
+            ViewData["MovieFK"] = new SelectList(_context.Movies, "Id", "Name"); //lista de filmes
             return View();
         }
 
@@ -44,6 +44,7 @@ namespace cinegest.Controllers
         {
             if (ModelState.IsValid)
             {
+                //verifica se existe alguma sessao no mesmo cinema entre a data da nova sessao
                 if (await _context.Sessions.Where(s => session.Start >= s.Start && session.Start <= s.End && s.Cinema.Id == session.CinemaFK).AnyAsync())
                 {
                     ViewData["message"] = "Já existe uma sessão neste cinema entre esta data.";
@@ -53,7 +54,7 @@ namespace cinegest.Controllers
                 }
 
                 session.End = session.Start; //fim=inicio
-                session.End = session.End.AddMinutes(_context.Movies.Find(session.MovieFK).Duration);//+duração do filme
+                session.End = session.End.AddMinutes(_context.Movies.Find(session.MovieFK).Duration);//fim+duração do filme
 
                 _context.Add(session);
                 await _context.SaveChangesAsync();
@@ -91,12 +92,14 @@ namespace cinegest.Controllers
         {
             var session = await _context.Sessions.FindAsync(id);
 
+            //verifica se a sessao esta a decorrer
             if (DateTime.UtcNow.Ticks >= session.Start.Ticks && DateTime.UtcNow.Ticks <= session.End.Ticks)
             {
                 ViewData["message"] = "Esta sessão está decorrer, não é possivel elimina-la";
                 return View(session);
             }
 
+            //remove os bilhetes associados a sessao
             foreach (var item in session.TicketsList)
             {
                 _context.Tickets.Remove(item);

@@ -88,6 +88,7 @@ namespace cinegest.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            //verifica se o email ja esta a ser utilizado
             if (_context.User.Where(u => u.Email == Input.Email).Any()) ModelState.AddModelError(string.Empty, "Este Email já está a ser utilizado.");
 
             returnUrl = returnUrl ?? Url.Content("~/");
@@ -104,19 +105,19 @@ namespace cinegest.Areas.Identity.Pages.Account
                 _context.Add(user);
                 await _context.SaveChangesAsync();
 
-                var applicationUser = new ApplicationUser
+                var applicationUser = new ApplicationUser //cria application User
                 {
                     UserName = Input.Email,
                     Email = Input.Email,
                     Nome = Input.Nome,
                     Timestamp = DateTime.Now,
-                    User = user.Id
+                    User = user.Id //id do utilizador
                 };
 
-                var result = await _userManager.CreateAsync(applicationUser, Input.Password);
+                var result = await _userManager.CreateAsync(applicationUser, Input.Password); //adiciona o application user
                 if (result.Succeeded)
                 {
-                    //dar permissão ao Application user
+                    //dar permissão ao Application User com a permissão base: User
                     await _userManager.AddToRoleAsync(applicationUser, "User");
 
                     _logger.LogInformation("Utilizador criado.");

@@ -26,6 +26,7 @@ namespace cinegest.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
+            //dados dos bilhetes de todos os utilizadores
             var tickets = _context.Tickets.Include(t => t.Session)
                 .Include(t => t.Session).ThenInclude(s => s.Movie)
                 .Include(t => t.Session).ThenInclude(s => s.Cinema)
@@ -42,6 +43,7 @@ namespace cinegest.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
 
+            //dados dos bilhetes do proprio utilizador
             var cinegestDB = _context.Tickets
                 .Where(s => s.User.Id == user.User)
                 .Include(t => t.Session)
@@ -64,12 +66,15 @@ namespace cinegest.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
+            //obtem o application user atual
             var applicationUser = await _userManager.GetUserAsync(User);
 
+            //obtem o utilizador associado ao application user atual
             var user = _context.User.Where(u => u.Id == applicationUser.User).FirstOrDefault();
 
-            ViewData["User"] = user.Id;
+            ViewData["User"] = user.Id;//envia para a view o id do user
 
+            //filme da sessao escolhida pelo utilizador
             var movie = await _context.Movies.Where(m => m.Id == session.MovieFK).FirstOrDefaultAsync();
 
             //a sessão já começou
@@ -111,7 +116,7 @@ namespace cinegest.Controllers
                     Seat = session.Occupated_seats + 1
                 };
 
-                session.Occupated_seats += 1;
+                session.Occupated_seats += 1;//incrementa o numero de lugares ocupados na sessao
 
                 _context.Add(ticket);
                 await _context.SaveChangesAsync();
@@ -167,7 +172,7 @@ namespace cinegest.Controllers
                 return View(nameof(Delete));
             }
 
-            session.Occupated_seats = session.Occupated_seats - 1;
+            session.Occupated_seats = session.Occupated_seats - 1;//decrementa o numeros e lugares ocupados
 
             _context.Tickets.Remove(ticket);
             await _context.SaveChangesAsync();

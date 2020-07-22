@@ -75,7 +75,7 @@ namespace cinegest.Controllers
                     ViewData["message"] = "Já existe um cinema com o mesmo nome.";
                     return View(cinema);
                 }
-
+                //adiciona o utilizador
                 _context.Add(cinema);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -115,7 +115,7 @@ namespace cinegest.Controllers
             {
                 try
                 {
-                    if (await _context.Sessions.Where(s => s.Movie.Id == id).AnyAsync())
+                    if (await _context.Sessions.Where(s => s.Movie.Id == id).AnyAsync())//verifica se o filme tem sessoes agendadas
                     {
                         ViewData["message"] = "Não é possivel alterar o cinema, tendo sessões agendadas para o mesmo.";
                         return View(cinema);
@@ -172,7 +172,7 @@ namespace cinegest.Controllers
 
             var cinema = await _context.Cinemas.FindAsync(id);
 
-            if (await _context.Sessions.Where(s => s.Cinema.Id == id).AnyAsync())
+            if (await _context.Sessions.Where(s => s.Cinema.Id == id).AnyAsync())//verifica se o cinema tem sessoes agendadas
             {
                 ViewData["message"] = "Não é possivel apagar o cinema, tendo sessões agendadas para o mesmo.";
                 return View(cinema);
@@ -180,7 +180,7 @@ namespace cinegest.Controllers
 
             _context.Cinemas.Remove(cinema);
 
-            var sessions = await _context.Sessions.Where(s => s.Cinema == cinema).ToListAsync();
+            var sessions = await _context.Sessions.Where(s => s.Cinema == cinema).ToListAsync();//obtem a lista de sessoes no cinema
             foreach (var item in sessions) //apaga todas as sessions
             {
                 _context.Sessions.Remove(item);

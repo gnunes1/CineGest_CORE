@@ -140,17 +140,20 @@ namespace cinegest.Controllers
                         using var fileStream = new FileStream(_environment.WebRootPath + "/images/users/" + g.ToString() + extensao, FileMode.Create);
                         await Avatar.CopyToAsync(fileStream);
                     }
+                    //altera os dados do utilizador
                     user.Email = Email;
                     user.Name = Name;
                     user.DoB = DoB;
                     user.Role = Role;
                     _context.Update(user);
 
+                    //altera os dados do application user
                     var netUser = await _context.Users.Where(u => u.User == Id).FirstOrDefaultAsync();
                     netUser.UserName = Email;
                     netUser.Email = Email;
                     netUser.Nome = Name;
 
+                    //altera o cargo dependendo da opcao escolhida
                     var userRole = await _context.UserRoles.Where(uR => uR.UserId == netUser.Id).FirstOrDefaultAsync();
                     if (userRole.RoleId == "1" && Role == "User") //remove Admin e dá User
                     {
@@ -162,7 +165,7 @@ namespace cinegest.Controllers
                         await _userManager.RemoveFromRoleAsync(netUser, "User");
                         await _userManager.AddToRoleAsync(netUser, "Admin");
                     }
-                    await _userManager.UpdateAsync(netUser);
+                    await _userManager.UpdateAsync(netUser);  //edita o application user com os novos dados
 
                     _context.Update(userRole);
                     await _context.SaveChangesAsync();
@@ -222,8 +225,9 @@ namespace cinegest.Controllers
                 return NotFound($"Unable to load user with ID '{user.Id}'.");
             }
 
+            //necessario ativar o bloqueio para apagar o utilizador, o utilizador e apagado quando voltar a fazer login
             await _userManager.SetLockoutEnabledAsync(user, true); //ativa o bloqueio
-            await _userManager.SetLockoutEndDateAsync(user, DateTime.Now.AddYears(9)); //bloqueia
+            await _userManager.SetLockoutEndDateAsync(user, DateTime.Now.AddYears(9)); //data de bloqueio
 
             return Redirect("~/");
         }

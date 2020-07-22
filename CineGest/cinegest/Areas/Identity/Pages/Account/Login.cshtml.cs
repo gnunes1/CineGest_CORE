@@ -99,29 +99,29 @@ namespace cinegest.Areas.Identity.Pages.Account
                 {
                     return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
                 }
-                if (result.IsLockedOut)
+                if (result.IsLockedOut) // o utilizador tem a conta bloqueada
                 {
                     _logger.LogWarning("User account locked out.");
 
                     //apaga o utilizador ----------------------------
                     var user = _context.Users.Where(u => u.UserName == Input.Email).FirstOrDefault();
 
-                    var result2 = await _userManager.DeleteAsync(user);
-                    var userId = await _userManager.GetUserIdAsync(user);
+                    var result2 = await _userManager.DeleteAsync(user); //apaga o application user
+                    var userId = await _userManager.GetUserIdAsync(user); //procura o id do user
                     if (!result2.Succeeded)
                     {
                         throw new InvalidOperationException($"Unexpected error occurred deleting user with ID '{userId}'.");
                     }
 
-                    var dbUser = _context.User.Find(user.User);
+                    var dbUser = _context.User.Find(user.User); // procura o utilizador associado ao application user
 
-                    foreach (var item in dbUser.TicketsList) //apaga os bilhetes
+                    foreach (var item in dbUser.TicketsList) //apaga os bilhetes de cada sessao associada ao utilizador
                     {
                         dbUser.TicketsList.Remove(item);
-                        if (item.Session.Start.Ticks > DateTime.Now.Ticks) item.Session.Occupated_seats -= 1;
+                        if (item.Session.Start.Ticks > DateTime.Now.Ticks) item.Session.Occupated_seats -= 1; //retira o bilhete da sessao
                     }
 
-                    _context.User.Remove(dbUser); //apaga o utilizador
+                    _context.User.Remove(dbUser); //apaga o utilizador usado nas relacoes
                     if (dbUser.Avatar != "default.png") System.IO.File.Delete(_environment.WebRootPath + "/images/users/" + dbUser.Avatar); // apaga a fotografia
 
                     await _context.SaveChangesAsync();
